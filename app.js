@@ -1,9 +1,8 @@
 const allJunimos = document.getElementsByClassName('junimo')
-console.log(allJunimos)
 const startButton = document.getElementById('game-button')
+const instruction = document.getElementById('instruction')
 let junimoColors = []
-let sequence = []
-// let sequence = []
+let colorSequence = []
 let echoSequence = []
 
 const getColor = (e) => {
@@ -11,44 +10,32 @@ const getColor = (e) => {
     echoSequence.push(junimo)
 }
 
-
 for (let junimo of allJunimos) {
     junimoColors.push(junimo.id)
     junimo.addEventListener('click', getColor)
 }
 
-const getSequence = (num) => {
+const getColorSequence = (num) => {
     for (let i = 0; i < num; i++) {
         const randIndex = Math.floor(Math.random() * junimoColors.length)
-        sequence.push(junimoColors[randIndex])
+        colorSequence.push(junimoColors[randIndex])
     }
     // checkIfAllTheSame(sequence);
-    return sequence;
+    return colorSequence;
 }
 
-
-
-
-//I need a function that executes getSequence and animates each junimo according to that function
-//this will require using setInterval so they don't all jump instantly
-//
-
-
-
-const checkIfAllTheSame = (sequence) => {
-    //check if all the colors are the same, i.e. we're just giving the user the same color for the entire sequence
-    //**Method via: @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/
-    let first = sequence[0]
-    for (let i = 1; i < sequence.length; i++) {
-        if (sequence[i] != first) {
-            return
-        }
-        else {
-            getSequence(sequence.length)
-        }
-    }
-}
-
+// const checkIfAllTheSame = (sequence) => {
+//     //**Credit to @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/ , for the inspiration behind this method that checks whether all colors in the sequence array are the same by checking if each one is identical to the first. This function prevents the player from getting an entire sequence of the same color. 
+//     let first = sequence[0]
+//     for (let i = 1; i < sequence.length; i++) {
+//         if (sequence[i] != first) {
+//             return
+//         }
+//         else {
+//             getSequence(sequence.length)
+//         }
+//     }
+// }
 
 const junimoBounce = (junimoDiv) => {
     junimoDiv.style.transform = 'translateY(-50px)'
@@ -57,38 +44,40 @@ const junimoBounce = (junimoDiv) => {
     }, 200)
 }
 
-const gameStart = () => {
-    // console.log('game button works')
-    getSequence(5)
-    console.log(`Sequence: ${sequence}`)
-    let junimoSequenceArr = [];
-    for (let i = 0; i < sequence.length; i++) {
-        let color = sequence[i];
-        junimoSequenceArr.push(allJunimos.namedItem(color))
-    }
-    console.log(`Junimo sequence array: ${junimoSequenceArr}`)
+// const playerTurn = () => {}
+//I need this function to prompt the player to repeat the pattern, 
+// const newH2 = document.createElement('h2')
+// newH2.innerText = "Now it's your turn!"
+// instruction.append(newH2)
+// grab their input every time they click on a div using an event listener, 
+// push that clicked div's id to an array called echoSequence, 
+// then finally compare the user's echoed sequence to the sequence the user was given
 
+
+const showSequence = () => {
+    getColorSequence(5)
+    let junimoSequence = [];
+    for (let i = 0; i < colorSequence.length; i++) {
+        let color = colorSequence[i];
+        junimoSequence.push(allJunimos.namedItem(color))
+    }
     //**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
-    junimoSequenceArr.forEach((junimoDiv, i) => {
+    junimoSequence.forEach((junimoDiv, i) => {
         setTimeout(() => {
             junimoBounce(junimoDiv)
         }, i * 500)
-
-    });
-
-    // setInterval(junimoJump(matchingJunimo), 1000)
-    //use an array method
-    //or wrap in set interval
-    //Research other ways of organizing this logic
-    //setInterval in an array / in for loop 
+    })
 }
 
-startButton.addEventListener('click', gameStart
+// playerTurn();
 
-    // () => {
-    //     console.log('game button works')
-    // }
-)
+
+const gameStart = () => {
+    showSequence();
+    // playerTurn();
+}
+
+startButton.addEventListener('click', gameStart)
 
 
 //PSEUDOCODE / PLANNING
