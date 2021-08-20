@@ -37,7 +37,7 @@ const getSequence = (num) => {
 
 const checkIfAllTheSame = (sequence) => {
     //check if all the colors are the same, i.e. we're just giving the user the same color for the entire sequence
-    //Method via: @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/
+    //**Method via: @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/
     let first = sequence[0]
     for (let i = 1; i < sequence.length; i++) {
         if (sequence[i] != first) {
@@ -51,17 +51,11 @@ const checkIfAllTheSame = (sequence) => {
 
 
 const junimoBounce = (junimoDiv) => {
-    console.log('junimo jump was called')
     junimoDiv.style.transform = 'translateY(-50px)'
+    setTimeout(() => {
+        junimoDiv.style.transform = 'translateY(0px)'
+    }, 200)
 }
-
-// const junimoLand = (junimoDiv, i) => {
-//     setTimeout(() => {
-//         junimoLand(junimoDiv);
-//     }, i * 500)
-//     console.log('junimo land was called')
-//     junimoDiv.style.transform = 'translateY(50px)'
-// }
 
 const gameStart = () => {
     // console.log('game button works')
@@ -71,15 +65,10 @@ const gameStart = () => {
     for (let i = 0; i < sequence.length; i++) {
         let color = sequence[i];
         junimoSequenceArr.push(allJunimos.namedItem(color))
-        // const junimoJumpInterval = setInterval(() => {
-        //     // console.log('hello' + i)
-        //     
-        //     // console.log(color)
-        //     const matchingJunimo = allJunimos.namedItem(color)
-        //     // console.log(matchingJunimo)
-        //     matchingJunimo.style.transform = 'translateY(-50px)'
-        // }, 1000)
     }
+    console.log(`Junimo sequence array: ${junimoSequenceArr}`)
+
+    //**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
     junimoSequenceArr.forEach((junimoDiv, i) => {
         setTimeout(() => {
             junimoBounce(junimoDiv)
