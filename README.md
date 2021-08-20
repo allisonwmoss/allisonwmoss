@@ -1,2 +1,2 @@
-# project1
-Browser-based game incorporating HTML, CSS, and JS. 
+# Junimo Jump
+A browser-based game that tests players' memory.
