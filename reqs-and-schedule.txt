@@ -8,7 +8,7 @@ Use semantic, valid markup for HTML and CSS (must pass validation without errors
 Show a good commit history with frequent commits (minimum of one commit per project day)
 
 Technical Requirements:
- Project code is pushed to a public Git repository
+ Project code is pushed to a public Git repository x
  Project is deployed on the internet (Github Pages, Netlify Drop, Surge.sh)
  Uses HTML, CSS, and JS for game solution
  Use Javascript vanilla API for DOM manipulation
@@ -19,7 +19,7 @@ Technical Requirements:
  Uses CSS to structure DOM element layout on screen
 
  Code Quality:
- HTML, CSS, and JS are in seperate files
+ HTML, CSS, and JS are in seperate files x
  Names (variables, functions, HTML ids, HTML classes, etc.) follow a naming convention
  Consistent indentation
 
@@ -31,7 +31,7 @@ Technical Requirements:
 
  Planning/Process/Submission:
  At least 30 git commits made throughout project week
- Has Readme file
+ Has Readme file x
  Readme file has link to deployed app
  
 **************************************************************************************************************************************************************************

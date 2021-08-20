@@ -1,3 +1,53 @@
 body {
-    background-color: aqua;
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.container {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    align-content: center;
+}
+
+#all-junimos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.junimo {
+    width: 200px;
+    height: 200px;
+    border: 1px solid grey;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 200px;
+}
+
+.junimo:hover {
+    transform: translateY(-50px);
+    transition: 0.3s ease-in;
+}
+
+#red {
+    background-image: url('images/red-junimo.png');
+}
+
+#yellow {
+    background-image: url('images/yellow-junimo.png')
+}
+
+#blue {
+    background-image: url('images/blue-junimo.png')
+}
+
+#purple {
+    background-image: url('images/purple-junimo.png')
+}
+
+#green {
+    background-image: url('images/green-junimo.png')
 }
