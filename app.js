@@ -1,10 +1,12 @@
 const allJunimos = document.getElementsByClassName('junimo')
 const startButton = document.getElementById('game-button')
 let junimoColors = []
+// let sequence = []
+let echoSequence = []
 
 const getColor = (e) => {
     const junimo = e.currentTarget.id
-    console.log(junimo)
+    echoSequence.push(junimo)
 }
 
 
@@ -14,11 +16,37 @@ for (let junimo of allJunimos) {
 }
 
 const gameStart = () => {
-    console.log('game starting!')
+    console.log(sequence)
 }
 
 startButton.addEventListener('click', gameStart)
 
+//I need a function that generates a random sequence of a given number of junimo colors and returns that sequence
+
+
+const checkIfAllTheSame = (sequence) => {
+    //check if all the colors are the same, i.e. we're just giving the user the same color for the entire sequence
+    //Method via: @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/
+    let first = sequence[0]
+    for (let i = 1; i < sequence.length; i++) {
+        if (sequence[i] != first) {
+            return
+        }
+        else {
+            giveSequence(sequence.length)
+        }
+    }
+}
+
+const giveSequence = (num) => {
+    let sequence = []
+    for (let i = 0; i < num; i++) {
+        const randIndex = Math.floor(Math.random() * junimoColors.length)
+        sequence.push(junimoColors[randIndex])
+    }
+    checkIfAllTheSame(sequence);
+    return sequence;
+}
 
 
 
