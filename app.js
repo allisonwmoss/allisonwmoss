@@ -6,8 +6,8 @@ let colorSequence = []
 let echoSequence = []
 
 const getColor = (e) => {
-    const junimo = e.currentTarget.id
-    echoSequence.push(junimo)
+    const junimoColor = e.currentTarget.id
+    echoSequence.push(junimoColor)
 }
 
 for (let junimo of allJunimos) {
@@ -20,6 +20,7 @@ const getColorSequence = (num) => {
         const randIndex = Math.floor(Math.random() * junimoColors.length)
         colorSequence.push(junimoColors[randIndex])
     }
+    console.log(colorSequence)
     // checkIfAllTheSame(sequence);
     return colorSequence;
 }
@@ -44,14 +45,18 @@ const junimoBounce = (junimoDiv) => {
     }, 200)
 }
 
-// const playerTurn = () => {}
-//I need this function to prompt the player to repeat the pattern, 
-// const newH2 = document.createElement('h2')
-// newH2.innerText = "Now it's your turn!"
-// instruction.append(newH2)
-// grab their input every time they click on a div using an event listener, 
-// push that clicked div's id to an array called echoSequence, 
-// then finally compare the user's echoed sequence to the sequence the user was given
+const playerTurn = () => {
+    console.log('your turn!')
+    // I need this function to prompt the player to repeat the pattern, 
+    // const newH2 = document.createElement('h2')
+    // newH2.innerText = "Now it's your turn!"
+    // instruction.append(newH2)
+    if (echoSequence.length === colorSequence.length && echoSequence === colorSequence) {
+        console.log('correct!')
+    }
+    // then finally compare the user's echoed sequence to the sequence the user was given
+}
+
 
 
 const showSequence = () => {
@@ -61,20 +66,44 @@ const showSequence = () => {
         let color = colorSequence[i];
         junimoSequence.push(allJunimos.namedItem(color))
     }
-    //**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
+
+    // *1
     junimoSequence.forEach((junimoDiv, i) => {
-        setTimeout(() => {
-            junimoBounce(junimoDiv)
-        }, i * 500)
+        return new Promise(resolve => {
+            (setTimeout(() => {
+                resolve(junimoBounce(junimoDiv))
+            }, i * 500))
+        })
     })
+
+    //*1
+    // new Promise(resolve => junimoSequence.forEach((junimoDiv, i) => {
+    //     (setTimeout(() => {
+    //         (junimoBounce(junimoDiv))
+    //     }, i * 500))
+    // }))
+    // return resolve
+
+
+    // *1
+    // const animateJunimos = () => {
+    //     junimoSequence.forEach((junimoDiv, i) => {
+    //          (setTimeout(() => {
+    //             junimoBounce(junimoDiv)
+    //         }, i * 500))
+    //     })
+
+    // }
+    // animateJunimos()
+
 }
 
 // playerTurn();
 
 
-const gameStart = () => {
-    showSequence();
-    // playerTurn();
+const gameStart = async () => {
+    await showSequence()
+    playerTurn();
 }
 
 startButton.addEventListener('click', gameStart)
@@ -100,3 +129,12 @@ startButton.addEventListener('click', gameStart)
 // Show me a cute animation of all the junimos jumping up and down at random when I win. 
 // Give me an option of how many rounds I'd like to play, like Easy, Medium, and Hard modes, so that I can ease into the game or really put my skills to the test. 
 // Require me to repeat the given pattern within a certain amount of time, and show me the time I have left as it ticks down. 
+
+
+
+
+
+
+
+//SOURCES/FOOTNOTES
+//*1**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
