@@ -1,6 +1,8 @@
 const allJunimos = document.getElementsByClassName('junimo')
+console.log(allJunimos)
 const startButton = document.getElementById('game-button')
 let junimoColors = []
+let sequence = []
 // let sequence = []
 let echoSequence = []
 
@@ -15,13 +17,22 @@ for (let junimo of allJunimos) {
     junimo.addEventListener('click', getColor)
 }
 
-const gameStart = () => {
-    console.log(sequence)
+const getSequence = (num) => {
+    for (let i = 0; i < num; i++) {
+        const randIndex = Math.floor(Math.random() * junimoColors.length)
+        sequence.push(junimoColors[randIndex])
+    }
+    // checkIfAllTheSame(sequence);
+    return sequence;
 }
 
-startButton.addEventListener('click', gameStart)
 
-//I need a function that generates a random sequence of a given number of junimo colors and returns that sequence
+
+
+//I need a function that executes getSequence and animates each junimo according to that function
+//this will require using setInterval so they don't all jump instantly
+//
+
 
 
 const checkIfAllTheSame = (sequence) => {
@@ -33,22 +44,62 @@ const checkIfAllTheSame = (sequence) => {
             return
         }
         else {
-            giveSequence(sequence.length)
+            getSequence(sequence.length)
         }
     }
 }
 
-const giveSequence = (num) => {
-    let sequence = []
-    for (let i = 0; i < num; i++) {
-        const randIndex = Math.floor(Math.random() * junimoColors.length)
-        sequence.push(junimoColors[randIndex])
-    }
-    checkIfAllTheSame(sequence);
-    return sequence;
+
+const junimoBounce = (junimoDiv) => {
+    console.log('junimo jump was called')
+    junimoDiv.style.transform = 'translateY(-50px)'
 }
 
+// const junimoLand = (junimoDiv, i) => {
+//     setTimeout(() => {
+//         junimoLand(junimoDiv);
+//     }, i * 500)
+//     console.log('junimo land was called')
+//     junimoDiv.style.transform = 'translateY(50px)'
+// }
 
+const gameStart = () => {
+    // console.log('game button works')
+    getSequence(5)
+    console.log(`Sequence: ${sequence}`)
+    let junimoSequenceArr = [];
+    for (let i = 0; i < sequence.length; i++) {
+        let color = sequence[i];
+        junimoSequenceArr.push(allJunimos.namedItem(color))
+        // const junimoJumpInterval = setInterval(() => {
+        //     // console.log('hello' + i)
+        //     
+        //     // console.log(color)
+        //     const matchingJunimo = allJunimos.namedItem(color)
+        //     // console.log(matchingJunimo)
+        //     matchingJunimo.style.transform = 'translateY(-50px)'
+        // }, 1000)
+    }
+    junimoSequenceArr.forEach((junimoDiv, i) => {
+        setTimeout(() => {
+            junimoBounce(junimoDiv)
+        }, i * 500)
+
+    });
+
+    // setInterval(junimoJump(matchingJunimo), 1000)
+    //use an array method
+    //or wrap in set interval
+    //Research other ways of organizing this logic
+    //setInterval in an array / in for loop 
+}
+
+startButton.addEventListener('click', gameStart
+
+    // () => {
+    //     console.log('game button works')
+    // }
+)
 
 
 //PSEUDOCODE / PLANNING
