@@ -11,7 +11,7 @@ body {
     align-content: center;
 }
 
-#all-junimos {
+#junimo-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

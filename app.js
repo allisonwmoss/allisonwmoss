@@ -1,3 +1,28 @@
+const allJunimos = document.getElementsByClassName('junimo')
+const startButton = document.getElementById('game-button')
+let junimoColors = []
+
+const getColor = (e) => {
+    const junimo = e.currentTarget.id
+    console.log(junimo)
+}
+
+
+for (let junimo of allJunimos) {
+    junimoColors.push(junimo.id)
+    junimo.addEventListener('click', getColor)
+}
+
+const gameStart = () => {
+    console.log('game starting!')
+}
+
+startButton.addEventListener('click', gameStart)
+
+
+
+
+
 //PSEUDOCODE / PLANNING
 
 //MVP
@@ -6,6 +31,7 @@
     //This will use a modal box that opens when you click a button and hides when you click out of it. 
 // Show me what the correct pattern is that I need to match, using animation of the Junimos to indicate the colors of the pattern.
 // Animate each Junimo when I click or hover over it, so I know which one I'm targeting. 
+    //I have accomplished this with CSS. Junimos jump when hovered over. 
 // Allow me to restart the game at any time.
 // Tell me when I get the pattern correct, and track my score in a way that I can see. 
 // Inform me that I have lost if I get the pattern incorrect. 
