@@ -45,7 +45,8 @@ GOALS/MILESTONES
 
 Thursday 8/19: Create new git repository for project x, choose project idea x, complete and submit project proposal x.
 
-Friday 8/20: Create HTML, CSS, and JS files and connect. Write user stories and pseudocode the basic structure of the project. Complete the HTML file and begin working in the JS file, if time allows. 
+Friday 8/20: Create HTML, CSS, and JS files and connect. x
+Write user stories and pseudocode the basic structure of the project. Complete the HTML file and begin working in the JS file, if time allows. 
 
 Monday 8/23: Work in the JS file. 
 

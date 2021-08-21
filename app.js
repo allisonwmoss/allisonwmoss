@@ -45,17 +45,24 @@ const junimoBounce = (junimoDiv) => {
     }, 200)
 }
 
-const playerTurn = () => {
+//*2
+const delay = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const playerTurn = async (ms) => {
+    await delay(ms)
     console.log('your turn!')
     // I need this function to prompt the player to repeat the pattern, 
     // const newH2 = document.createElement('h2')
     // newH2.innerText = "Now it's your turn!"
     // instruction.append(newH2)
-    if (echoSequence.length === colorSequence.length && echoSequence === colorSequence) {
-        console.log('correct!')
-    }
+    // if (echoSequence.length === colorSequence.length && echoSequence === colorSequence) {
+    //     console.log('correct!')
+    // }
     // then finally compare the user's echoed sequence to the sequence the user was given
 }
+
 
 
 
@@ -68,13 +75,22 @@ const showSequence = () => {
     }
 
     // *1
-    junimoSequence.forEach((junimoDiv, i) => {
-        return new Promise(resolve => {
+    const animateJunimos = (junimoSequence) => {
+        junimoSequence.forEach((junimoDiv, i) => {
             (setTimeout(() => {
-                resolve(junimoBounce(junimoDiv))
+                junimoBounce(junimoDiv)
             }, i * 500))
         })
-    })
+    }
+    animateJunimos(junimoSequence)
+    // *1
+    // junimoSequence.forEach((junimoDiv, i) => {
+    //     return new Promise(resolve => {
+    //         (setTimeout(() => {
+    //             resolve(junimoBounce(junimoDiv))
+    //         }, i * 500))
+    //     })
+    // })
 
     //*1
     // new Promise(resolve => junimoSequence.forEach((junimoDiv, i) => {
@@ -85,25 +101,16 @@ const showSequence = () => {
     // return resolve
 
 
-    // *1
-    // const animateJunimos = () => {
-    //     junimoSequence.forEach((junimoDiv, i) => {
-    //          (setTimeout(() => {
-    //             junimoBounce(junimoDiv)
-    //         }, i * 500))
-    //     })
 
-    // }
-    // animateJunimos()
 
 }
 
-// playerTurn();
 
-
-const gameStart = async () => {
-    await showSequence()
-    playerTurn();
+const gameStart = () => {
+    // await showSequence()
+    // playerTurn();
+    showSequence();
+    playerTurn(3000);
 }
 
 startButton.addEventListener('click', gameStart)
@@ -138,3 +145,4 @@ startButton.addEventListener('click', gameStart)
 
 //SOURCES/FOOTNOTES
 //*1**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
+//*2**https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac
