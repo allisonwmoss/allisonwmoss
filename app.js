@@ -1,16 +1,24 @@
+//Please see Footnotes at end for sources/references of certain code blocks. Code blocks with a footnote are denoted like this:
+//*number
+
 //-------------------------------Global stuff--------------------------------------
+
 //Grab our junimo divs, instruction box div, and start button
 const allJunimos = document.getElementsByClassName('junimo')
 const startButton = document.getElementById('game-button')
 const resetButton = document.getElementById('reset-button')
 const instruction = document.getElementById('instruction')
 const scoreBox = document.getElementById('score-box')
-//Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence
+
+//Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence.
 let junimoColors = []
 let colorSequence = []
 let echoSequence = []
+
+//Establishes the baseline difficulty of the game, and allows for the difficulty to increase with each subsequent round.
 let playerLevel = 5;
 
+//This function streamlines the process of flashing up a new instruction or feedback message for the player. 
 const newInstruction = (message) => {
     instruction.innerHTML = "";
     const newH2 = document.createElement('h2')
@@ -19,6 +27,7 @@ const newInstruction = (message) => {
     console.log(message)
 }
 
+//This function updates the user's level, which corresponds to the difficulty of each round, as well as adding a new "point" for the user to see in the form of a stardrop.
 const updateScore = () => {
     playerLevel++
     const newStardrop = document.createElement('div')
@@ -26,16 +35,19 @@ const updateScore = () => {
     scoreBox.append(newStardrop)
 }
 
+//This function runs if the player gets the pattern correct. It adds a message that the player was correct, updates the player's level and score, and resets everything needed for the next round.
 const correct = () => {
     newInstruction('Correct!')
     updateScore();
     resetForNextTurn()
 }
+//This function runs if the player gets the pattern incorrect. It removes all of the player's stardrops and adds a message that the pattern was wrong, and instructs the player to click Reset to start over. 
 const incorrect = () => {
     scoreBox.innerHTML = ""
     newInstruction('Oh no, you got the pattern wrong! Click Reset to play again.')
 }
 
+//This function waits three seconds, resets all values needed to play another round, and starts another round. The delay is necessary, because without it, the player will never actually see the message from the correct function indicating that they got the sequence correct--it just starts the next round, which is confusing. 
 const resetForNextTurn = async () => {
     await delay(3000)
     console.log('delay done!')
@@ -43,9 +55,9 @@ const resetForNextTurn = async () => {
     echoSequence = []
     instruction.innerHTML = ""
     playRound(playerLevel)
-
 }
 
+//This function allows the player to reset the game to a neutral state so they can start over. 
 const hardReset = () => {
     colorSequence = []
     echoSequence = []
@@ -56,22 +68,23 @@ const hardReset = () => {
 }
 
 //*3
-const compare = (source, destination) => {
+//This function compares the echo sequence to the color sequence and checks if all items in the echo are identical to the items in the color sequence. It accomplishes this with a counter variable that increments by one for each identical item found when iterating through both arrays, then comparing the value of the counter variable to the length of the echo sequence. 
+//This is necessary because, as i found out, just checking whether array1 === array2 does not actually work. 
+const compare = (echoSequence, colorSequence) => {
     let counter = 0;
-    for (let i = 0; i < source.length; i++) {
-        if (source[i] === destination[i]) {
+    for (let i = 0; i < echoSequence.length; i++) {
+        if (echoSequence[i] === colorSequence[i]) {
             counter++
         }
     }
-    if (counter === source.length) {
+    if (counter === echoSequence.length) {
         return 0;
     } else {
         return 1;
     }
-    // return counter === source.length
 }
 
-//This function pulls the color id from a junimo div clicked by the player and adds it to the echo sequence
+//This function pulls the color id from a junimo div clicked by the player and adds it to the echo sequence. It then checks if the player has at least entered the right number of items in the echo sequence. If the player has, it will check if the echo sequence and the color sequence are the same, and run the correct or incorrect functions accordingly. 
 const getPlayerResponse = (e) => {
     console.log('get player response was called')
     const junimoColor = e.currentTarget.id
@@ -79,14 +92,17 @@ const getPlayerResponse = (e) => {
     echoSequence.push(junimoColor)
     console.log(echoSequence)
     console.log(colorSequence)
-    if (echoSequence.length === colorSequence.length) {
-        console.log('length is same!')
-        if (compare(echoSequence, colorSequence) === 0) {
-            correct()
-        } else if (compare(echoSequence, colorSequence) === 1) {
-            incorrect()
+    const checkIfCorrect = () => {
+        if (echoSequence.length === colorSequence.length) {
+            console.log('length is same!')
+            if (compare(echoSequence, colorSequence) === 0) {
+                correct()
+            } else if (compare(echoSequence, colorSequence) === 1) {
+                incorrect()
+            }
         }
     }
+    checkIfCorrect();
 }
 
 //This fills the array of possible colors with the color ids of all the junimo divs on the page and adds an event listener to each junimo div which will call the getPlayerResponse function when clicked
@@ -127,9 +143,8 @@ const playerTurn = async (ms) => {
 }
 
 //This function calls the getColorSequence to get a sequence of five random colors. It then creates an empty array to hold the corresponding junimo sequence to be animated, and fills that array accordingly based on the random sequence returned by getColorSequence. Finally, it runs the animation sequence.
-const showSequence = async (difficultyNum) => {
-    console.log('show sequence was called')
-    getColorSequence(difficultyNum)
+const showSequence = async (playerLevel) => {
+    getColorSequence(playerLevel)
     let junimoSequence = [];
     for (let i = 0; i < colorSequence.length; i++) {
         let color = colorSequence[i];
@@ -137,7 +152,7 @@ const showSequence = async (difficultyNum) => {
     }
 
     //This function uses setTimeout to make each junimo bounce up 500 miliseconds after the previous one, allowing them to bounce one at a time rather than all at once. 
-    // *1
+    //*1
     const animateJunimos = (junimoSequence) => {
         junimoSequence.forEach((junimoDiv, i) => {
             (setTimeout(() => {
@@ -148,45 +163,15 @@ const showSequence = async (difficultyNum) => {
     animateJunimos(junimoSequence)
 }
 
-//This function will run the basic actions of the game. Currently it shows the sequence, then immediately runs playerTurn, but since playerTurn has a delay at the start of it of 3000 miliseconds, the animation is allowed to finish before the player is prompted to give their response. 
-//What I want this function to do is show the random sequence of junimo animation, wait for that to be done, start the player's turn, wait for the player to click on 5 junimos, check if the echoSequence the player entered is the same as the colorSequence, and tell them whether they got it right or wrong.
-const playRound = async (difficultyNum) => {
-    console.log('game start was called')
-
-    showSequence(difficultyNum).then(playerTurn(3000))
+//This function runs the main game actions. It takes an argument of playerLevel, which will correspond to the player's level as they advance through the game, and which determines the difficulty of each round. It will show the animated random color sequence, then once that is done, it will prompt the player to respond by echoing the sequence.
+const playRound = async (playerLevel) => {
+    showSequence(playerLevel).then(playerTurn(3000))
 }
 
-//
 startButton.addEventListener('click', () => {
     playRound(playerLevel)
 })
 resetButton.addEventListener('click', hardReset)
-
-
-
-
-
-
-
-
-
-
-//What do I want this to do?
-//Show the random sequence of junimo animation
-//wait until the sequence is done playing
-//Start the player's turn
-//Wait for the player to click on 5 junimos (or however many they were shown)
-//Check if the colors the player entered (echoSequence) is the same as the colors they were shown (colorSequence)
-//Then either tell them they got it right or tell them they lost
-
-
-
-
-
-
-
-
-
 
 
 //PSEUDOCODE / PLANNING
@@ -217,13 +202,8 @@ resetButton.addEventListener('click', hardReset)
 
 //SOURCES/FOOTNOTES
 //*1**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
-//*2**https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac
-///*3 Source: My dad
-
-
-
-
-
+//*2**This simple function allows me to create an artificial delay of a few miliseconds anywhere in the program that I need it, such as when I need to allow the player a few seconds to read an instruction before moving on. Credit to Daniel Sasse, https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac.
+///*3 My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached this solution collaboratively. 
 
 
 //CODE GRAVEYARD
