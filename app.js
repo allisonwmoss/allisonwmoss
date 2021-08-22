@@ -1,49 +1,38 @@
+//-------------------------------Global stuff--------------------------------------
+//Grab our junimo divs, instruction box div, and start button
 const allJunimos = document.getElementsByClassName('junimo')
 const startButton = document.getElementById('game-button')
 const instruction = document.getElementById('instruction')
+//Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence
 let junimoColors = []
 let colorSequence = []
 let echoSequence = []
 
-// const getColor = (e) => {
-//     const junimoColor = e.currentTarget.id
-//     echoSequence.push(junimoColor)
-// }
-
+//This function pulls the color id from a junimo div clicked by the player and adds it to the echo sequence
 const getPlayerResponse = (e) => {
     console.log('get player response was called')
     const junimoColor = e.currentTarget.id
     echoSequence.push(junimoColor)
+    console.log(echoSequence)
 }
 
+//This fills the array of possible colors with the color ids of all the junimo divs on the page and adds an event listener to each junimo div which will call the getPlayerResponse function when clicked
 for (let junimo of allJunimos) {
     junimoColors.push(junimo.id)
     junimo.addEventListener('click', getPlayerResponse)
 }
 
+//This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
 const getColorSequence = (num) => {
     for (let i = 0; i < num; i++) {
         const randIndex = Math.floor(Math.random() * junimoColors.length)
         colorSequence.push(junimoColors[randIndex])
     }
     console.log(colorSequence)
-    // checkIfAllTheSame(sequence);
     return colorSequence;
 }
 
-// const checkIfAllTheSame = (sequence) => {
-//     //**Credit to @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/ , for the inspiration behind this method that checks whether all colors in the sequence array are the same by checking if each one is identical to the first. This function prevents the player from getting an entire sequence of the same color. 
-//     let first = sequence[0]
-//     for (let i = 1; i < sequence.length; i++) {
-//         if (sequence[i] != first) {
-//             return
-//         }
-//         else {
-//             getSequence(sequence.length)
-//         }
-//     }
-// }
-
+//this function makes a given junimo div bounce up, then back down to baseline after 200 miliseconds
 const junimoBounce = (junimoDiv) => {
     junimoDiv.style.transform = 'translateY(-50px)'
     setTimeout(() => {
@@ -51,36 +40,36 @@ const junimoBounce = (junimoDiv) => {
     }, 200)
 }
 
+//This function just creates a delay in the program for a given number of miliseconds. Currently I'm using it to make the program wait for the end of the junimo animation sequence before it prompts the player to enter their response. This is a temporary bandaid solution until I can really figure out how promises and async functions are supposed to work
 //*2
 const delay = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+//This function is supposed to check if the echoSequence entered by the player is correct or not, but it doesn't work currently 
 const checkIfCorrect = async () => {
     // console.log(echoSequence)
     if (echoSequence.length === colorSequence.length && echoSequence === colorSequence) {
         console.log('correct!')
-    } else {
-        await delay(1000)
     }
+    // else {
+    //     await delay(1000)
+    // }
 }
 
+//This function is supposed to run the actions of the player's turn, like waiting for the player to enter 5 colors into the echoSequence array before calling the checkIfCorrect function, but it doesn't work currently. It just uses the delay function to create a delay of a given number of miliseconds to allow the junimo animation to finish before prompting the player to enter their sequence. I tried to use a loop for waiting and checking but it just hung the browser up and never called checkIfCorrect 
 const playerTurn = async (ms) => {
     await delay(ms)
     console.log('your turn!')
-    return new Promise(resolve => {
-        do {
-            checkIfCorrect()
-        } while (echoSequence.length != colorSequence.length)
-    })
-    // const newH2 = document.createElement('h2')
-    // newH2.innerText = "Now it's your turn!"
-    // instruction.append(newH2)
+    // return new Promise(resolve => {
+    //     do {
+    //         checkIfCorrect()
+    //     } while (echoSequence.length != colorSequence.length)
+    // })
+
 }
 
-
-
-
+//This function calls the getColorSequence to get a sequence of five random colors. It then creates an empty array to hold the corresponding junimo sequence to be animated, and fills that array accordingly based on the random sequence returned by getColorSequence. Finally, it runs the animation sequence.
 const showSequence = () => {
     getColorSequence(5)
     let junimoSequence = [];
@@ -89,6 +78,7 @@ const showSequence = () => {
         junimoSequence.push(allJunimos.namedItem(color))
     }
 
+    //This function uses setTimeout to make each junimo bounce up 500 miliseconds after the previous one, allowing them to bounce one at a time rather than all at once. 
     // *1
     const animateJunimos = (junimoSequence) => {
         junimoSequence.forEach((junimoDiv, i) => {
@@ -98,29 +88,10 @@ const showSequence = () => {
         })
     }
     animateJunimos(junimoSequence)
-    // *1
-    // junimoSequence.forEach((junimoDiv, i) => {
-    //     return new Promise(resolve => {
-    //         (setTimeout(() => {
-    //             resolve(junimoBounce(junimoDiv))
-    //         }, i * 500))
-    //     })
-    // })
-
-    //*1
-    // new Promise(resolve => junimoSequence.forEach((junimoDiv, i) => {
-    //     (setTimeout(() => {
-    //         (junimoBounce(junimoDiv))
-    //     }, i * 500))
-    // }))
-    // return resolve
-
-
-
-
 }
 
-
+//This function will run the basic actions of the game. Currently it shows the sequence, then immediately runs playerTurn, but since playerTurn has a delay at the start of it of 3000 miliseconds, the animation is allowed to finish before the player is prompted to give their response. 
+//What I want this function to do is show the random sequence of junimo animation, wait for that to be done, start the player's turn, wait for the player to click on 5 junimos, check if the echoSequence the player entered is the same as the colorSequence, and tell them whether they got it right or wrong.
 const gameStart = () => {
     // await showSequence()
     // playerTurn();
@@ -128,7 +99,34 @@ const gameStart = () => {
     playerTurn(3000);
 }
 
+//
 startButton.addEventListener('click', gameStart)
+
+
+
+
+
+
+
+
+
+
+//What do I want this to do?
+//Show the random sequence of junimo animation
+//wait until the sequence is done playing
+//Start the player's turn
+//Wait for the player to click on 5 junimos (or however many they were shown)
+//Check if the colors the player entered (echoSequence) is the same as the colors they were shown (colorSequence)
+//Then either tell them they got it right or tell them they lost
+
+
+
+
+
+
+
+
+
 
 
 //PSEUDOCODE / PLANNING
@@ -161,3 +159,46 @@ startButton.addEventListener('click', gameStart)
 //SOURCES/FOOTNOTES
 //*1**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
 //*2**https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac
+
+
+//CODE GRAVEYARD
+
+
+// *1
+    // junimoSequence.forEach((junimoDiv, i) => {
+    //     return new Promise(resolve => {
+    //         (setTimeout(() => {
+    //             resolve(junimoBounce(junimoDiv))
+    //         }, i * 500))
+    //     })
+    // })
+
+    //*1
+    // new Promise(resolve => junimoSequence.forEach((junimoDiv, i) => {
+    //     (setTimeout(() => {
+    //         (junimoBounce(junimoDiv))
+    //     }, i * 500))
+    // }))
+    // return resolve
+
+// const newH2 = document.createElement('h2')
+    // newH2.innerText = "Now it's your turn!"
+    // instruction.append(newH2)
+
+    // const getColor = (e) => {
+//     const junimoColor = e.currentTarget.id
+//     echoSequence.push(junimoColor)
+// }
+
+// const checkIfAllTheSame = (sequence) => {
+//     //**Credit to @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/ , for the inspiration behind this method that checks whether all colors in the sequence array are the same by checking if each one is identical to the first. This function prevents the player from getting an entire sequence of the same color. 
+//     let first = sequence[0]
+//     for (let i = 1; i < sequence.length; i++) {
+//         if (sequence[i] != first) {
+//             return
+//         }
+//         else {
+//             getSequence(sequence.length)
+//         }
+//     }
+// }
