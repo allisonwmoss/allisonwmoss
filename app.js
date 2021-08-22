@@ -8,12 +8,42 @@ let junimoColors = []
 let colorSequence = []
 let echoSequence = []
 
+//*3
+const compare = (source, destination) => {
+    let counter = 0;
+    for (let i = 0; i < source.length; i++) {
+        if (source[i] === destination[i]) {
+            counter++
+        }
+    }
+    if (counter === source.length) {
+        return 0;
+    } else {
+        return 1;
+    }
+    // return counter === source.length
+}
+
 //This function pulls the color id from a junimo div clicked by the player and adds it to the echo sequence
 const getPlayerResponse = (e) => {
     console.log('get player response was called')
     const junimoColor = e.currentTarget.id
+    console.log(junimoColor)
     echoSequence.push(junimoColor)
     console.log(echoSequence)
+    console.log(colorSequence)
+    if (echoSequence.length === colorSequence.length) {
+        console.log('length is same!')
+        // compare(echoSequence, colorSequence)
+        if (compare(echoSequence, colorSequence) === 0) {
+            console.log('correct!')
+        } else if (compare(echoSequence, colorSequence) === 1) {
+            console.log('incorrect')
+        }
+    }
+    // } else {
+    //     return;
+    // }
 }
 
 //This fills the array of possible colors with the color ids of all the junimo divs on the page and adds an event listener to each junimo div which will call the getPlayerResponse function when clicked
@@ -49,12 +79,16 @@ const delay = (ms) => {
 //This function is supposed to check if the echoSequence entered by the player is correct or not, but it doesn't work currently 
 const checkIfCorrect = async () => {
     // console.log(echoSequence)
-    if (echoSequence.length === colorSequence.length && echoSequence === colorSequence) {
-        console.log('correct!')
-    }
+    // while (1 === 1) {
+
+    // }
     // else {
     //     await delay(1000)
     // }
+}
+
+const throwaway = () => {
+    console.log('it worked')
 }
 
 //This function is supposed to run the actions of the player's turn, like waiting for the player to enter 5 colors into the echoSequence array before calling the checkIfCorrect function, but it doesn't work currently. It just uses the delay function to create a delay of a given number of miliseconds to allow the junimo animation to finish before prompting the player to enter their sequence. I tried to use a loop for waiting and checking but it just hung the browser up and never called checkIfCorrect 
@@ -62,9 +96,7 @@ const playerTurn = async (ms) => {
     await delay(ms)
     console.log('your turn!')
     // return new Promise(resolve => {
-    //     do {
-    //         checkIfCorrect()
-    //     } while (echoSequence.length != colorSequence.length)
+    checkIfCorrect().then(throwaway)
     // })
 
 }
@@ -159,7 +191,7 @@ startButton.addEventListener('click', gameStart)
 //SOURCES/FOOTNOTES
 //*1**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
 //*2**https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac
-
+///*3 Source: My dad
 
 //CODE GRAVEYARD
 
