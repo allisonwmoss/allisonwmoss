@@ -5,14 +5,20 @@ let junimoColors = []
 let colorSequence = []
 let echoSequence = []
 
-const getColor = (e) => {
+// const getColor = (e) => {
+//     const junimoColor = e.currentTarget.id
+//     echoSequence.push(junimoColor)
+// }
+
+const getPlayerResponse = (e) => {
+    console.log('get player response was called')
     const junimoColor = e.currentTarget.id
     echoSequence.push(junimoColor)
 }
 
 for (let junimo of allJunimos) {
     junimoColors.push(junimo.id)
-    junimo.addEventListener('click', getColor)
+    junimo.addEventListener('click', getPlayerResponse)
 }
 
 const getColorSequence = (num) => {
@@ -50,17 +56,26 @@ const delay = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const checkIfCorrect = async () => {
+    // console.log(echoSequence)
+    if (echoSequence.length === colorSequence.length && echoSequence === colorSequence) {
+        console.log('correct!')
+    } else {
+        await delay(1000)
+    }
+}
+
 const playerTurn = async (ms) => {
     await delay(ms)
     console.log('your turn!')
-    // I need this function to prompt the player to repeat the pattern, 
+    return new Promise(resolve => {
+        do {
+            checkIfCorrect()
+        } while (echoSequence.length != colorSequence.length)
+    })
     // const newH2 = document.createElement('h2')
     // newH2.innerText = "Now it's your turn!"
     // instruction.append(newH2)
-    // if (echoSequence.length === colorSequence.length && echoSequence === colorSequence) {
-    //     console.log('correct!')
-    // }
-    // then finally compare the user's echoed sequence to the sequence the user was given
 }
 
 
