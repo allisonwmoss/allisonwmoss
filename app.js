@@ -11,6 +11,14 @@ let colorSequence = []
 let echoSequence = []
 let playerScore = 0;
 
+const newInstruction = (message) => {
+    instruction.innerHTML = "";
+    const newH2 = document.createElement('h2')
+    newH2.innerText = message;
+    instruction.append(newH2)
+    console.log(message)
+}
+
 const updateScore = () => {
     playerScore++
     const newStardrop = document.createElement('div')
@@ -18,10 +26,23 @@ const updateScore = () => {
     scoreBox.append(newStardrop)
 }
 
-const resetForNextTurn = () => {
+const correct = () => {
+    newInstruction('Correct!')
+    updateScore();
+    resetForNextTurn()
+}
+const incorrect = () => {
+    scoreBox.innerHTML = ""
+    newInstruction('Oh no, you got the pattern wrong! Click Reset to play again.')
+}
+
+const resetForNextTurn = async () => {
+    await delay(3000)
+    console.log('delay done!')
     colorSequence = []
     echoSequence = []
     instruction.innerHTML = ""
+    gameStart()
 }
 
 const hardReset = () => {
@@ -57,10 +78,10 @@ const getPlayerResponse = (e) => {
     if (echoSequence.length === colorSequence.length) {
         console.log('length is same!')
         if (compare(echoSequence, colorSequence) === 0) {
-            console.log('correct!')
-            updateScore();
+            correct()
+
         } else if (compare(echoSequence, colorSequence) === 1) {
-            console.log('incorrect')
+            incorrect()
         }
     }
 }
@@ -99,10 +120,7 @@ const delay = (ms) => {
 //This function is supposed to run the actions of the player's turn, like waiting for the player to enter 5 colors into the echoSequence array before calling the checkIfCorrect function, but it doesn't work currently. It just uses the delay function to create a delay of a given number of miliseconds to allow the junimo animation to finish before prompting the player to enter their sequence. I tried to use a loop for waiting and checking but it just hung the browser up and never called checkIfCorrect 
 const playerTurn = async (ms) => {
     await delay(ms)
-    console.log('your turn!')
-    const newH2 = document.createElement('h2')
-    newH2.innerText = "Now it's your turn!"
-    instruction.append(newH2)
+    newInstruction('It\'s your turn!')
 }
 
 //This function calls the getColorSequence to get a sequence of five random colors. It then creates an empty array to hold the corresponding junimo sequence to be animated, and fills that array accordingly based on the random sequence returned by getColorSequence. Finally, it runs the animation sequence.
