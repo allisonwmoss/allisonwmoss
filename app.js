@@ -9,7 +9,7 @@ const scoreBox = document.getElementById('score-box')
 let junimoColors = []
 let colorSequence = []
 let echoSequence = []
-let playerScore = 0;
+let playerLevel = 5;
 
 const newInstruction = (message) => {
     instruction.innerHTML = "";
@@ -20,7 +20,7 @@ const newInstruction = (message) => {
 }
 
 const updateScore = () => {
-    playerScore++
+    playerLevel++
     const newStardrop = document.createElement('div')
     newStardrop.classList.add('stardrop')
     scoreBox.append(newStardrop)
@@ -42,13 +42,17 @@ const resetForNextTurn = async () => {
     colorSequence = []
     echoSequence = []
     instruction.innerHTML = ""
-    gameStart()
+    playRound(playerLevel)
+
 }
 
 const hardReset = () => {
-    resetForNextTurn()
-    playerScore = 0;
+    colorSequence = []
+    echoSequence = []
+    instruction.innerHTML = ""
     scoreBox.innerHTML = "";
+    playerLevel = 5;
+
 }
 
 //*3
@@ -79,7 +83,6 @@ const getPlayerResponse = (e) => {
         console.log('length is same!')
         if (compare(echoSequence, colorSequence) === 0) {
             correct()
-
         } else if (compare(echoSequence, colorSequence) === 1) {
             incorrect()
         }
@@ -124,9 +127,9 @@ const playerTurn = async (ms) => {
 }
 
 //This function calls the getColorSequence to get a sequence of five random colors. It then creates an empty array to hold the corresponding junimo sequence to be animated, and fills that array accordingly based on the random sequence returned by getColorSequence. Finally, it runs the animation sequence.
-const showSequence = async () => {
+const showSequence = async (difficultyNum) => {
     console.log('show sequence was called')
-    getColorSequence(5)
+    getColorSequence(difficultyNum)
     let junimoSequence = [];
     for (let i = 0; i < colorSequence.length; i++) {
         let color = colorSequence[i];
@@ -147,16 +150,16 @@ const showSequence = async () => {
 
 //This function will run the basic actions of the game. Currently it shows the sequence, then immediately runs playerTurn, but since playerTurn has a delay at the start of it of 3000 miliseconds, the animation is allowed to finish before the player is prompted to give their response. 
 //What I want this function to do is show the random sequence of junimo animation, wait for that to be done, start the player's turn, wait for the player to click on 5 junimos, check if the echoSequence the player entered is the same as the colorSequence, and tell them whether they got it right or wrong.
-const gameStart = async () => {
+const playRound = async (difficultyNum) => {
     console.log('game start was called')
-    // await showSequence()
-    // playerTurn();
-    showSequence().then(playerTurn(3000))
-    // playerTurn(3000);
+
+    showSequence(difficultyNum).then(playerTurn(3000))
 }
 
 //
-startButton.addEventListener('click', gameStart)
+startButton.addEventListener('click', () => {
+    playRound(playerLevel)
+})
 resetButton.addEventListener('click', hardReset)
 
 
