@@ -2,11 +2,33 @@
 //Grab our junimo divs, instruction box div, and start button
 const allJunimos = document.getElementsByClassName('junimo')
 const startButton = document.getElementById('game-button')
+const resetButton = document.getElementById('reset-button')
 const instruction = document.getElementById('instruction')
+const scoreBox = document.getElementById('score-box')
 //Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence
 let junimoColors = []
 let colorSequence = []
 let echoSequence = []
+let playerScore = 0;
+
+const updateScore = () => {
+    playerScore++
+    const newStardrop = document.createElement('div')
+    newStardrop.classList.add('stardrop')
+    scoreBox.append(newStardrop)
+}
+
+const resetForNextTurn = () => {
+    colorSequence = []
+    echoSequence = []
+    instruction.innerHTML = ""
+}
+
+const hardReset = () => {
+    resetForNextTurn()
+    playerScore = 0;
+    scoreBox.innerHTML = "";
+}
 
 //*3
 const compare = (source, destination) => {
@@ -34,16 +56,13 @@ const getPlayerResponse = (e) => {
     console.log(colorSequence)
     if (echoSequence.length === colorSequence.length) {
         console.log('length is same!')
-        // compare(echoSequence, colorSequence)
         if (compare(echoSequence, colorSequence) === 0) {
             console.log('correct!')
+            updateScore();
         } else if (compare(echoSequence, colorSequence) === 1) {
             console.log('incorrect')
         }
     }
-    // } else {
-    //     return;
-    // }
 }
 
 //This fills the array of possible colors with the color ids of all the junimo divs on the page and adds an event listener to each junimo div which will call the getPlayerResponse function when clicked
@@ -54,6 +73,7 @@ for (let junimo of allJunimos) {
 
 //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
 const getColorSequence = (num) => {
+    console.log('color sequence was called')
     for (let i = 0; i < num; i++) {
         const randIndex = Math.floor(Math.random() * junimoColors.length)
         colorSequence.push(junimoColors[randIndex])
@@ -76,33 +96,18 @@ const delay = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-//This function is supposed to check if the echoSequence entered by the player is correct or not, but it doesn't work currently 
-const checkIfCorrect = async () => {
-    // console.log(echoSequence)
-    // while (1 === 1) {
-
-    // }
-    // else {
-    //     await delay(1000)
-    // }
-}
-
-const throwaway = () => {
-    console.log('it worked')
-}
-
 //This function is supposed to run the actions of the player's turn, like waiting for the player to enter 5 colors into the echoSequence array before calling the checkIfCorrect function, but it doesn't work currently. It just uses the delay function to create a delay of a given number of miliseconds to allow the junimo animation to finish before prompting the player to enter their sequence. I tried to use a loop for waiting and checking but it just hung the browser up and never called checkIfCorrect 
 const playerTurn = async (ms) => {
     await delay(ms)
     console.log('your turn!')
-    // return new Promise(resolve => {
-    checkIfCorrect().then(throwaway)
-    // })
-
+    const newH2 = document.createElement('h2')
+    newH2.innerText = "Now it's your turn!"
+    instruction.append(newH2)
 }
 
 //This function calls the getColorSequence to get a sequence of five random colors. It then creates an empty array to hold the corresponding junimo sequence to be animated, and fills that array accordingly based on the random sequence returned by getColorSequence. Finally, it runs the animation sequence.
-const showSequence = () => {
+const showSequence = async () => {
+    console.log('show sequence was called')
     getColorSequence(5)
     let junimoSequence = [];
     for (let i = 0; i < colorSequence.length; i++) {
@@ -124,15 +129,17 @@ const showSequence = () => {
 
 //This function will run the basic actions of the game. Currently it shows the sequence, then immediately runs playerTurn, but since playerTurn has a delay at the start of it of 3000 miliseconds, the animation is allowed to finish before the player is prompted to give their response. 
 //What I want this function to do is show the random sequence of junimo animation, wait for that to be done, start the player's turn, wait for the player to click on 5 junimos, check if the echoSequence the player entered is the same as the colorSequence, and tell them whether they got it right or wrong.
-const gameStart = () => {
+const gameStart = async () => {
+    console.log('game start was called')
     // await showSequence()
     // playerTurn();
-    showSequence();
-    playerTurn(3000);
+    showSequence().then(playerTurn(3000))
+    // playerTurn(3000);
 }
 
 //
 startButton.addEventListener('click', gameStart)
+resetButton.addEventListener('click', hardReset)
 
 
 
@@ -167,9 +174,8 @@ startButton.addEventListener('click', gameStart)
 
 // Offer to explain the game to me before playing.
     //This will use a modal box that opens when you click a button and hides when you click out of it. 
-// Show me what the correct pattern is that I need to match, using animation of the Junimos to indicate the colors of the pattern.
-// Animate each Junimo when I click or hover over it, so I know which one I'm targeting. 
-    //I have accomplished this with CSS. Junimos jump when hovered over. 
+// Show me what the correct pattern is that I need to match, using animation of the Junimos to indicate the colors of the pattern. x
+// Animate each Junimo when I click or hover over it, so I know which one I'm targeting.
 // Allow me to restart the game at any time.
 // Tell me when I get the pattern correct, and track my score in a way that I can see. 
 // Inform me that I have lost if I get the pattern incorrect. 
@@ -193,9 +199,13 @@ startButton.addEventListener('click', gameStart)
 //*2**https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac
 ///*3 Source: My dad
 
+
+
+
+
+
+
 //CODE GRAVEYARD
-
-
 // *1
     // junimoSequence.forEach((junimoDiv, i) => {
     //     return new Promise(resolve => {

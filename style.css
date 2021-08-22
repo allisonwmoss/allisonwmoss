@@ -11,6 +11,12 @@ body {
     align-content: center;
 }
 
+.container-horiz {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 #junimo-container {
     display: flex;
     flex-direction: row;
@@ -27,11 +33,13 @@ body {
     background-size: 200px;
 }
 
-.junimo:hover {
+/* .junimo:hover {
     transform: translateY(-50px);
     transition: 0.3s ease-in;
-}
+} */
 
+
+/* Junimo and Stardrop icons via: https://www.pixilart.com/art/blue-junimo-710824ab6d23cd3 */
 #red {
     background-image: url('images/red-junimo.png');
 }
@@ -50,4 +58,14 @@ body {
 
 #green {
     background-image: url('images/green-junimo.png')
+}
+
+.stardrop {
+    width: 100px;
+    height: 100px;
+    border: 1px solid grey;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80px;
+    background-image: url('images/stardrop.png')
 }
