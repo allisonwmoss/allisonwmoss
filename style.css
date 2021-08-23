@@ -93,3 +93,19 @@ h1 {
     background-size: 80px;
     background-image: url('images/stardrop.png')
 }
+
+#red-diff {
+    background-image: url('images/red-junimo.png');
+}
+
+#yellow-diff {
+    background-image: url('images/yellow-junimo.png')
+}
+
+#purple-diff {
+    background-image: url('images/purple-junimo.png')
+}
+
+#green-diff {
+    background-image: url('images/green-junimo.png')
+}

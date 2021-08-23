@@ -1,8 +1,8 @@
 //Stardew Valley copyright 2016-2021 ConcernedApe LLC. 
+
 //Please see Footnotes at end for sources/references of certain code blocks. Code blocks with a footnote are denoted like this:
 //*number
 
-//-------------------------------Global goodies--------------------------------------
 
 //Establishes the starting difficulty of the game, and allows for the difficulty to increase with each subsequent round. Establishes the delay necessary for the sequence animation to run before the player is prompted to provide their echo sequence. 
 let playerLevel = 0;
@@ -10,12 +10,14 @@ let animationDelay = (playerLevel * 500) + 500;
 let winCondition = 0;
 
 //Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence.
-let junimoColors = ['red', 'yellow', 'blue', 'purple', 'green']
+const junimoColors = ['red', 'yellow', 'blue', 'purple', 'green']
 let colorSequence = []
 let echoSequence = []
+let playerModeChoice = {}
 
 //Grab our junimo divs, instruction box div, and start button
-
+const allJunimos = document.getElementsByClassName('junimo')
+console.log(allJunimos)
 const difficultyDivs = document.getElementsByClassName('difficulty-junimo')
 const gameplayContainer = document.getElementById('gameplay')
 gameplayContainer.style.display = 'none';
@@ -27,10 +29,10 @@ const scoreBox = document.getElementById('score-box')
 const difficultyContainer = document.getElementById('difficulty-selection')
 
 const gameModeOptions = [
-    { id: 'green', mode: 'easy', playerLevel: 1, winCondition: 4 },
-    { id: 'yellow', mode: 'medium', playerLevel: 3, winCondition: 6 },
-    { id: 'red', mode: 'hard', playerLevel: 5, winCondition: 8 },
-    { id: 'purple', mode: 'prairieking', playerLevel: 1, winCondition: Infinity }
+    { id: 'green-diff', mode: 'easy', playerLevel: 1, winCondition: 4 },
+    { id: 'yellow-diff', mode: 'medium', playerLevel: 3, winCondition: 6 },
+    { id: 'red-diff', mode: 'hard', playerLevel: 5, winCondition: 8 },
+    { id: 'purple-diff', mode: 'prairieking', playerLevel: 1, winCondition: Infinity }
 ]
 
 const gameModeHandler = (e) => {
@@ -58,44 +60,50 @@ for (let div of difficultyDivs) {
     div.addEventListener('mouseleave', junimoHoverEffectDown)
 }
 
-const startGameMode = (gameModeSelection) => {
-    playerLevel = gameModeSelection.playerLevel
-    console.log(playerLevel)
-    winCondition = gameModeSelection.winCondition
-    console.log(winCondition)
-    animationDelay = (playerLevel * 500) + 500;
-    console.log(animationDelay)
-    while (difficultyContainer.firstChild) {
-        difficultyContainer.removeChild(difficultyContainer.firstChild)
+//This function pulls the color id from a junimo div clicked by the player and adds it to the echo sequence. It then checks if the player has at least entered the right number of items in the echo sequence. If the player has, it will check if the echo sequence and the color sequence are the same, and run the correct or incorrect functions accordingly. 
+const getPlayerResponse = (e) => {
+    const junimoColor = e.currentTarget.id
+    console.log(junimoColor)
+    echoSequence.push(junimoColor)
+    const checkIfCorrect = () => {
+        if (echoSequence.length === colorSequence.length) {
+            if (compareSequences(echoSequence, colorSequence) === 0) {
+                correct()
+            } else if (compareSequences(echoSequence, colorSequence) === 1) {
+                incorrect()
+            }
+        }
     }
+    checkIfCorrect();
+}
+
+const startGameMode = (gameModeSelection) => {
+    playerModeChoice = gameModeSelection;
+    console.log(playerModeChoice.playerLevel)
+    console.log(playerModeChoice.winCondition)
+    playerLevel = gameModeSelection.playerLevel
+    winCondition = gameModeSelection.winCondition
+    animationDelay = (playerLevel * 500) + 500;
     difficultyContainer.style.display = 'none';
     const junimoContainer = document.getElementById('junimo-container')
-    for (let color of junimoColors) {
-        const newJunimoDiv = document.createElement('div');
-        newJunimoDiv.setAttribute('class', 'junimo');
-        newJunimoDiv.setAttribute('id', color)
-        newJunimoDiv.addEventListener('click', getPlayerResponse);
-        newJunimoDiv.addEventListener('mouseenter', junimoHoverEffectUp)
-        newJunimoDiv.addEventListener('mouseleave', junimoHoverEffectDown)
-        junimoContainer.append(newJunimoDiv)
+    for (let junimo of allJunimos) {
+        junimo.addEventListener('click', getPlayerResponse);
+        junimo.addEventListener('mouseenter', junimoHoverEffectUp)
+        junimo.addEventListener('mouseleave', junimoHoverEffectDown)
     }
     gameplayContainer.style.display = 'flex'
     playRound(playerLevel, animationDelay)
 }
 
-const allJunimos = document.getElementsByClassName('junimo')
-console.log(allJunimos)
 
 //--------------------------------GAME FUNCTIONS------------------------------------------
 
 //This function checks if the player has won the game. If they have, it will congratulate them and encourage them to reset and play again. If they haven't, it will initiate the next round. 
 const checkForWinCondition = () => {
     if (playerLevel === winCondition) {
-        console.log('win condition met')
         newInstruction('Congratulations, you won! Press Reset to play again.')
         return
     } else {
-        console.log('win condition not met')
         resetForNextTurn()
     }
 }
@@ -139,18 +147,17 @@ const resetForNextTurn = async () => {
     playRound(playerLevel, animationDelay)
 }
 
-
-
-//*****Deprecated by new difficulty choice, will need to fix******
 //This function allows the player to reset the game to a neutral state so they can start over. 
 const hardReset = () => {
     colorSequence = []
     echoSequence = []
     instruction.innerHTML = ""
     scoreBox.innerHTML = "";
-    playerLevel = 1;
+    playerLevel = 0;
+    winCondition = 0;
     animationDelay = (playerLevel * 500) + 500
-    playRound(playerLevel, animationDelay)
+    gameplayContainer.style.display = 'none';
+    difficultyContainer.style.display = 'flex'
 }
 
 
@@ -169,24 +176,6 @@ const compareSequences = (array1, array2) => {
         return 1;
     }
 }
-
-//This function pulls the color id from a junimo div clicked by the player and adds it to the echo sequence. It then checks if the player has at least entered the right number of items in the echo sequence. If the player has, it will check if the echo sequence and the color sequence are the same, and run the correct or incorrect functions accordingly. 
-const getPlayerResponse = (e) => {
-    const junimoColor = e.currentTarget.id
-    console.log(junimoColor)
-    echoSequence.push(junimoColor)
-    const checkIfCorrect = () => {
-        if (echoSequence.length === colorSequence.length) {
-            if (compareSequences(echoSequence, colorSequence) === 0) {
-                correct()
-            } else if (compareSequences(echoSequence, colorSequence) === 1) {
-                incorrect()
-            }
-        }
-    }
-    checkIfCorrect();
-}
-
 
 
 //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
@@ -216,7 +205,6 @@ const getColorSequence = (playerLevel) => {
         }
     }
     checkIfAllTheSame(colorSequence)
-    console.log(colorSequence)
     return colorSequence;
 }
 
@@ -250,7 +238,7 @@ const showSequence = async (playerLevel) => {
         let color = colorSequence[i];
         junimoSequence.push(allJunimos.namedItem(color))
     }
-
+    console.log(junimoSequence)
     //This function uses setTimeout to make each junimo bounce up 500 miliseconds after the previous one, allowing them to bounce one at a time rather than all at once. 
     //*1
     const animateJunimos = (junimoSequence) => {
@@ -268,9 +256,9 @@ const playRound = async (playerLevel, animationDelay) => {
     showSequence(playerLevel).then(playerTurn(animationDelay))
 }
 
-startButton.addEventListener('click', () => {
-    playRound(playerLevel, animationDelay)
-})
+// startButton.addEventListener('click', () => {
+//     playRound(playerLevel, animationDelay)
+// })
 resetButton.addEventListener('click', hardReset)
 
 
