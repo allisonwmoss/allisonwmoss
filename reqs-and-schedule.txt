@@ -54,7 +54,7 @@ Add an ultimate win condition. x
 Fix junimo hover animation, which currently does not run when the player is selecting junimos for the echo sequence. x
 Explore ways for players to indicate how hard they want the game to be at start. x
 Fix reset button for new dynamic game mode. x
-Slack Github repo link to Ben. 
+Slack Github repo link to Ben. x
 
 
 

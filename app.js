@@ -6,7 +6,7 @@
 
 //Establishes the starting difficulty of the game, and allows for the difficulty to increase with each subsequent round. Establishes the delay necessary for the sequence animation to run before the player is prompted to provide their echo sequence. 
 let playerLevel = 0;
-let animationDelay = (playerLevel * 500) + 500;
+let animationDelay = (playerLevel * 500) + 1000;
 let winCondition = 0;
 
 //Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence.
@@ -83,7 +83,7 @@ const startGameMode = (gameModeSelection) => {
     console.log(playerModeChoice.winCondition)
     playerLevel = gameModeSelection.playerLevel
     winCondition = gameModeSelection.winCondition
-    animationDelay = (playerLevel * 500) + 500;
+    animationDelay = (playerLevel * 500) + 1000;
     difficultyContainer.style.display = 'none';
     const junimoContainer = document.getElementById('junimo-container')
     for (let junimo of allJunimos) {
@@ -120,7 +120,7 @@ const newInstruction = (message) => {
 //This function updates the user's level, which corresponds to the difficulty of each round, as well as adding a new "point" for the user to see in the form of a stardrop.
 const updateScore = () => {
     playerLevel++
-    animationDelay = (playerLevel * 500) + 500;
+    animationDelay = (playerLevel * 500) + 1000;
     const newStardrop = document.createElement('div')
     newStardrop.classList.add('stardrop')
     scoreBox.append(newStardrop)
@@ -155,7 +155,7 @@ const hardReset = () => {
     scoreBox.innerHTML = "";
     playerLevel = 0;
     winCondition = 0;
-    animationDelay = (playerLevel * 500) + 500
+    animationDelay = (playerLevel * 500) + 1000
     gameplayContainer.style.display = 'none';
     difficultyContainer.style.display = 'flex'
 }
