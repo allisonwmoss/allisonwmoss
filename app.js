@@ -1,5 +1,4 @@
 //Stardew Valley copyright 2016-2021 ConcernedApe LLC. 
-//.
 //Please see Footnotes at end for sources/references of certain code blocks. Code blocks with a footnote are denoted like this:
 //*number
 
@@ -17,7 +16,7 @@ let colorSequence = []
 let echoSequence = []
 
 //Establishes the baseline difficulty of the game, and allows for the difficulty to increase with each subsequent round. Establishes the delay necessary for the sequence animation to run before the player is prompted to provide their echo sequence. 
-let playerLevel = 5;
+let playerLevel = 1;
 let animationDelay = (playerLevel * 500) + 500;
 
 //This function streamlines the process of flashing up a new instruction or feedback message for the player. 
@@ -32,7 +31,7 @@ const newInstruction = (message) => {
 //This function updates the user's level, which corresponds to the difficulty of each round, as well as adding a new "point" for the user to see in the form of a stardrop.
 const updateScore = () => {
     playerLevel++
-    animationDelay = (playerLevel * 500) + 500;
+    animationDelay = (playerLevel++ * 500) + 500;
     const newStardrop = document.createElement('div')
     newStardrop.classList.add('stardrop')
     scoreBox.append(newStardrop)
@@ -53,11 +52,10 @@ const incorrect = () => {
 //This function waits three seconds, resets all values needed to play another round, and starts another round. The delay is necessary, because without it, the player will never actually see the message from the correct function indicating that they got the sequence correct--it just starts the next round, which is confusing. 
 const resetForNextTurn = async () => {
     await delay(3000)
-    console.log('delay done!')
     colorSequence = []
     echoSequence = []
     instruction.innerHTML = ""
-    playRound(playerLevel)
+    playRound(playerLevel, animationDelay)
 }
 
 //This function allows the player to reset the game to a neutral state so they can start over. 
@@ -67,20 +65,18 @@ const hardReset = () => {
     instruction.innerHTML = ""
     scoreBox.innerHTML = "";
     playerLevel = 5;
-
 }
 
 //*3
-//This function compares the echo sequence to the color sequence and checks if all items in the echo are identical to the items in the color sequence. It accomplishes this with a counter variable that increments by one for each identical item found when iterating through both arrays, then comparing the value of the counter variable to the length of the echo sequence. 
-//This is necessary because, as i found out, just checking whether array1 === array2 does not actually work. 
-const compare = (echoSequence, colorSequence) => {
+//This function compares one array to another and determines whether all items in the first are equal to all items in the second. It accomplishes this with a counter variable that increments by one for each identical item found when iterating through both arrays, then comparing the value of the counter variable to the length of the echo sequence. This is necessary because, as i found out, just checking whether array1 === array2 does not actually work. This function is used as both a correctness checker for the echo sequence and an are-they-all-the-same checker for the color sequence.  
+const compareSequences = (array1, array2) => {
     let counter = 0;
-    for (let i = 0; i < echoSequence.length; i++) {
-        if (echoSequence[i] === colorSequence[i]) {
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] === array2[i]) {
             counter++
         }
     }
-    if (counter === echoSequence.length) {
+    if (counter === array1.length) {
         return 0;
     } else {
         return 1;
@@ -89,7 +85,6 @@ const compare = (echoSequence, colorSequence) => {
 
 //This function pulls the color id from a junimo div clicked by the player and adds it to the echo sequence. It then checks if the player has at least entered the right number of items in the echo sequence. If the player has, it will check if the echo sequence and the color sequence are the same, and run the correct or incorrect functions accordingly. 
 const getPlayerResponse = (e) => {
-    console.log('get player response was called')
     const junimoColor = e.currentTarget.id
     console.log(junimoColor)
     echoSequence.push(junimoColor)
@@ -97,10 +92,9 @@ const getPlayerResponse = (e) => {
     console.log(colorSequence)
     const checkIfCorrect = () => {
         if (echoSequence.length === colorSequence.length) {
-            console.log('length is same!')
-            if (compare(echoSequence, colorSequence) === 0) {
+            if (compareSequences(echoSequence, colorSequence) === 0) {
                 correct()
-            } else if (compare(echoSequence, colorSequence) === 1) {
+            } else if (compareSequences(echoSequence, colorSequence) === 1) {
                 incorrect()
             }
         }
@@ -115,12 +109,34 @@ for (let junimo of allJunimos) {
 }
 
 //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
-const getColorSequence = (num) => {
-    console.log('color sequence was called')
-    for (let i = 0; i < num; i++) {
+const getColorSequence = (playerLevel) => {
+    for (let i = 0; i < playerLevel; i++) {
         const randIndex = Math.floor(Math.random() * junimoColors.length)
         colorSequence.push(junimoColors[randIndex])
     }
+
+    //This function checks if the player is about to be given a sequence that is all of the same color, since this would make for a really easy round. It does this by creating an array of the same length as the color sequence that contains only the first color of the color sequence, then running the versatile compareSequences function to determine if both are the same. If they perfectly match, we know it's a sequence of all one color, so it empties the color sequence array and starts the function over. Otherwise, it returns the color sequence. 
+    const checkIfAllTheSame = (colorSequence) => {
+        if (playerLevel === 1) {
+            console.log(colorSequence)
+            return colorSequence;
+        } else {
+            let first = colorSequence[0]
+            let arrOfFirst = []
+            for (let i = 0; i < colorSequence.length; i++) {
+                arrOfFirst.push(first)
+            }
+            console.log(arrOfFirst)
+            if (compareSequences(colorSequence, arrOfFirst) === 0) {
+                colorSequence = [];
+                getColorSequence(playerLevel)
+            } else {
+                console.log(colorSequence)
+                return colorSequence;
+            }
+        }
+    }
+    checkIfAllTheSame(colorSequence)
     console.log(colorSequence)
     return colorSequence;
 }
@@ -133,13 +149,13 @@ const junimoBounce = (junimoDiv) => {
     }, 200)
 }
 
-//This function just creates a delay in the program for a given number of miliseconds. Currently I'm using it to make the program wait for the end of the junimo animation sequence before it prompts the player to enter their response. This is a temporary bandaid solution until I can really figure out how promises and async functions are supposed to work
+//This function creates a delay in the program for a given number of miliseconds, allowing animations to finish running before a prompt is given or giving the player time to read a prompt before moving on.
 //*2
 const delay = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-//This function is supposed to run the actions of the player's turn, like waiting for the player to enter 5 colors into the echoSequence array before calling the checkIfCorrect function, but it doesn't work currently. It just uses the delay function to create a delay of a given number of miliseconds to allow the junimo animation to finish before prompting the player to enter their sequence. I tried to use a loop for waiting and checking but it just hung the browser up and never called checkIfCorrect 
+//This function initiates the player's turn. It first waits for the animation to finish running, then prompts the player to echo back the sequence. 
 const playerTurn = async (animationDelay) => {
     await delay(animationDelay)
     newInstruction('It\'s your turn!')
@@ -208,43 +224,3 @@ resetButton.addEventListener('click', hardReset)
 //*2**This simple function allows me to create an artificial delay of a few miliseconds anywhere in the program that I need it, such as when I need to allow the player a few seconds to read an instruction before moving on. Credit to Daniel Sasse, https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac.
 ///*3 My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached this solution collaboratively. 
 
-
-//CODE GRAVEYARD
-// *1
-    // junimoSequence.forEach((junimoDiv, i) => {
-    //     return new Promise(resolve => {
-    //         (setTimeout(() => {
-    //             resolve(junimoBounce(junimoDiv))
-    //         }, i * 500))
-    //     })
-    // })
-
-    //*1
-    // new Promise(resolve => junimoSequence.forEach((junimoDiv, i) => {
-    //     (setTimeout(() => {
-    //         (junimoBounce(junimoDiv))
-    //     }, i * 500))
-    // }))
-    // return resolve
-
-// const newH2 = document.createElement('h2')
-    // newH2.innerText = "Now it's your turn!"
-    // instruction.append(newH2)
-
-    // const getColor = (e) => {
-//     const junimoColor = e.currentTarget.id
-//     echoSequence.push(junimoColor)
-// }
-
-// const checkIfAllTheSame = (sequence) => {
-//     //**Credit to @bilal-hungund, Geeks For Geeks, https://www.geeksforgeeks.org/all-elements-in-an-array-are-same-or-not/ , for the inspiration behind this method that checks whether all colors in the sequence array are the same by checking if each one is identical to the first. This function prevents the player from getting an entire sequence of the same color. 
-//     let first = sequence[0]
-//     for (let i = 1; i < sequence.length; i++) {
-//         if (sequence[i] != first) {
-//             return
-//         }
-//         else {
-//             getSequence(sequence.length)
-//         }
-//     }
-// }
