@@ -1,5 +1,5 @@
 //Stardew Valley copyright 2016-2021 ConcernedApe LLC. 
-
+//.
 //Please see Footnotes at end for sources/references of certain code blocks. Code blocks with a footnote are denoted like this:
 //*number
 
