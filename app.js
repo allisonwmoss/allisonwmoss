@@ -160,7 +160,6 @@ const hardReset = () => {
     difficultyContainer.style.display = 'flex'
 }
 
-
 //*3
 //This function compares one array to another and determines whether all items in the first are equal to all items in the second. It accomplishes this with a counter variable that increments by one for each identical item found when iterating through both arrays, then comparing the value of the counter variable to the length of the echo sequence. This is necessary because, as i found out, just checking whether array1 === array2 does not actually work. This function is used as both a correctness checker for the echo sequence and an are-they-all-the-same checker for the color sequence.  
 const compareSequences = (array1, array2) => {
