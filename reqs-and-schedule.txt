@@ -46,11 +46,23 @@ GOALS/MILESTONES
 Thursday 8/19: Create new git repository for project x, choose project idea x, complete and submit project proposal x.
 
 Friday 8/20: Create HTML, CSS, and JS files and connect. x
-Write user stories and pseudocode the basic structure of the project. Complete the HTML file and begin working in the JS file, if time allows. x
+Write user stories and pseudocode the basic structure of the project. x
+Complete the HTML file and begin working in the JS file, if time allows. x
 
-Monday 8/23: Fix junimo sequence animation delay so that it is correct no matter how many junimos are in the sequence. Add an ultimate win condition. Explore ways for players to indicate how hard they want the game to be at start. Look into timeout for the player to repeat the sequence and visual representation of that timeout. 
+Monday 8/23: Fix junimo sequence animation delay so that it is correct no matter how many junimos are in the sequence. x
+Add an ultimate win condition. x
+Fix junimo hover animation, which currently does not run when the player is selecting junimos for the echo sequence. x
+Explore ways for players to indicate how hard they want the game to be at start. 
+Reorganize app.js code for readability. Test to ensure everything still works. 
 
-Tuesday 8/24: Look into an animation to run upon ultimate win condition. Design and implement the game rules modal box. Fix junimo hover animation, which currently does not run when the player is selecting junimos for the echo sequence. 
+Slack Github repo link to Ben. 
+
+
+
+Tuesday 8/24: Look into an animation to run upon ultimate win condition. 
+Design and implement the game rules modal box. 
+Look into timeout for the player to repeat the sequence and visual representation of that timeout. 
+
 
 Wednesday 8/25: Complete styling and testing. 
 
@@ -63,3 +75,12 @@ Simon Says game with Stardew Valley theming.
 icons via: https://www.pixilart.com/art/blue-junimo-710824ab6d23cd3
 
 ***************************************************************************************************************************************************************************
+
+
+Easy mode: You begin with a sequence of one. Your second sequence has two. Your final sequence has four. 
+
+Medium mode: You begin with a sequence of 3. Your second sequence has 4. Your final sequence has 5. 
+
+Hard mode: You begin with a sequence of 5. Your second sequence has 6. Your final sequence has 7. 
+
+Hop Til You Drop: Begin with a sequence of 3 and continue until you get the sequence wrong. 

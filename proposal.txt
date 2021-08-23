@@ -11,11 +11,11 @@ User Stories:
 MVP Goals 
 As a player, I want the game to...
 Offer to explain the game to me before playing.
-Show me what the correct pattern is that I need to match, using animation of the Junimos to indicate the colors of the pattern.
+Show me what the correct pattern is that I need to match, using animation of the Junimos to indicate the colors of the pattern. x
 Animate each Junimo when I click or hover over it, so I know which one I'm targeting. 
-Allow me to restart the game at any time.
-Tell me when I get the pattern correct, and track my score in a way that I can see. 
-Inform me that I have lost if I get the pattern incorrect. 
+Allow me to restart the game at any time. x
+Tell me when I get the pattern correct, and track my score in a way that I can see. x
+Inform me that I have lost if I get the pattern incorrect. x
 Inform me when I win the game.
 
 Stretch Goals

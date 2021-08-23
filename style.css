@@ -1,6 +1,14 @@
+/* Fonts: */
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
 body {
     background-color: cornflowerblue;
     color: white;
+    
+}
+
+h1 {
+    font-size: 3em;
 }
 
 .container {
@@ -15,6 +23,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 #junimo-container {
@@ -24,19 +33,34 @@ body {
     align-items: center;
 }
 
+#difficulty-selection {
+    padding: 50px;
+}
+
 .junimo {
     width: 200px;
     height: 200px;
-    border: 1px solid grey;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 200px;
 }
 
-/* .junimo:hover {
-    transform: translateY(-50px);
-    transition: 0.3s ease-in;
-} */
+.difficulty-junimo {
+    width: 300px;
+    height: 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 300px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items:center;
+    justify-content: center;
+    font-size: 2em;
+    overflow-wrap: break-word;
+    font-family: 'Permanent Marker', cursive;
+    color: black;
+}
 
 
 /* Junimo and Stardrop icons via: https://www.pixilart.com/art/blue-junimo-710824ab6d23cd3 */

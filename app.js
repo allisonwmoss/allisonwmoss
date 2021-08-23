@@ -3,25 +3,94 @@
 //*number
 
 //-------------------------------Global goodies--------------------------------------
+
+//Establishes the starting difficulty of the game, and allows for the difficulty to increase with each subsequent round. Establishes the delay necessary for the sequence animation to run before the player is prompted to provide their echo sequence. 
+let playerLevel = 0;
+let animationDelay = (playerLevel * 500) + 500;
+let winCondition = 0;
+
+//Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence.
+let junimoColors = ['red', 'yellow', 'blue', 'purple', 'green']
+let colorSequence = []
+let echoSequence = []
+
 //Grab our junimo divs, instruction box div, and start button
-const allJunimos = document.getElementsByClassName('junimo')
+
+const difficultyDivs = document.getElementsByClassName('difficulty-junimo')
+const gameplayContainer = document.getElementById('gameplay')
+gameplayContainer.style.display = 'none';
 const startButton = document.getElementById('game-button')
 const resetButton = document.getElementById('reset-button')
 const instruction = document.getElementById('instruction')
 const scoreBox = document.getElementById('score-box')
 
-//Establish empty arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence.
-let junimoColors = []
-let colorSequence = []
-let echoSequence = []
+const difficultyContainer = document.getElementById('difficulty-selection')
 
-//Establishes the baseline difficulty of the game, and allows for the difficulty to increase with each subsequent round. Establishes the delay necessary for the sequence animation to run before the player is prompted to provide their echo sequence. 
-let playerLevel = 1;
-let animationDelay = (playerLevel * 500) + 500;
+const gameModeOptions = [
+    { id: 'green', mode: 'easy', playerLevel: 1, winCondition: 4 },
+    { id: 'yellow', mode: 'medium', playerLevel: 3, winCondition: 6 },
+    { id: 'red', mode: 'hard', playerLevel: 5, winCondition: 8 },
+    { id: 'purple', mode: 'prairieking', playerLevel: 1, winCondition: Infinity }
+]
 
+const gameModeHandler = (e) => {
+    const colorId = e.currentTarget.id
+    const gameModeSelection = gameModeOptions.find(element => element.id === colorId)
+    startGameMode(gameModeSelection)
+}
+
+//These two event handlers animate the junimo divs up and down when you hover on them. 
+const junimoHoverEffectUp = (e) => {
+    const junimo = e.currentTarget
+    junimo.style.transform = 'translateY(-50px)'
+    junimo.style.transition = '0.3s ease-in;'
+    // junimoBounce(junimo)
+}
+const junimoHoverEffectDown = (e) => {
+    const junimo = e.currentTarget
+    junimo.style.transform = 'translateY(0px)'
+    junimo.style.transition = '0.3s ease-in;'
+}
+
+for (let div of difficultyDivs) {
+    div.addEventListener('click', gameModeHandler)
+    div.addEventListener('mouseenter', junimoHoverEffectUp)
+    div.addEventListener('mouseleave', junimoHoverEffectDown)
+}
+
+const startGameMode = (gameModeSelection) => {
+    playerLevel = gameModeSelection.playerLevel
+    console.log(playerLevel)
+    winCondition = gameModeSelection.winCondition
+    console.log(winCondition)
+    animationDelay = (playerLevel * 500) + 500;
+    console.log(animationDelay)
+    while (difficultyContainer.firstChild) {
+        difficultyContainer.removeChild(difficultyContainer.firstChild)
+    }
+    difficultyContainer.style.display = 'none';
+    const junimoContainer = document.getElementById('junimo-container')
+    for (let color of junimoColors) {
+        const newJunimoDiv = document.createElement('div');
+        newJunimoDiv.setAttribute('class', 'junimo');
+        newJunimoDiv.setAttribute('id', color)
+        newJunimoDiv.addEventListener('click', getPlayerResponse);
+        newJunimoDiv.addEventListener('mouseenter', junimoHoverEffectUp)
+        newJunimoDiv.addEventListener('mouseleave', junimoHoverEffectDown)
+        junimoContainer.append(newJunimoDiv)
+    }
+    gameplayContainer.style.display = 'flex'
+    playRound(playerLevel, animationDelay)
+}
+
+const allJunimos = document.getElementsByClassName('junimo')
+console.log(allJunimos)
+
+//--------------------------------GAME FUNCTIONS------------------------------------------
+
+//This function checks if the player has won the game. If they have, it will congratulate them and encourage them to reset and play again. If they haven't, it will initiate the next round. 
 const checkForWinCondition = () => {
-    console.log('check for win condition was run')
-    if (playerLevel === 3) {
+    if (playerLevel === winCondition) {
         console.log('win condition met')
         newInstruction('Congratulations, you won! Press Reset to play again.')
         return
@@ -30,7 +99,6 @@ const checkForWinCondition = () => {
         resetForNextTurn()
     }
 }
-
 
 //This function streamlines the process of flashing up a new instruction or feedback message for the player. 
 const newInstruction = (message) => {
@@ -71,6 +139,9 @@ const resetForNextTurn = async () => {
     playRound(playerLevel, animationDelay)
 }
 
+
+
+//*****Deprecated by new difficulty choice, will need to fix******
 //This function allows the player to reset the game to a neutral state so they can start over. 
 const hardReset = () => {
     colorSequence = []
@@ -79,7 +150,9 @@ const hardReset = () => {
     scoreBox.innerHTML = "";
     playerLevel = 1;
     animationDelay = (playerLevel * 500) + 500
+    playRound(playerLevel, animationDelay)
 }
+
 
 //*3
 //This function compares one array to another and determines whether all items in the first are equal to all items in the second. It accomplishes this with a counter variable that increments by one for each identical item found when iterating through both arrays, then comparing the value of the counter variable to the length of the echo sequence. This is necessary because, as i found out, just checking whether array1 === array2 does not actually work. This function is used as both a correctness checker for the echo sequence and an are-they-all-the-same checker for the color sequence.  
@@ -102,7 +175,6 @@ const getPlayerResponse = (e) => {
     const junimoColor = e.currentTarget.id
     console.log(junimoColor)
     echoSequence.push(junimoColor)
-    console.log(colorSequence)
     const checkIfCorrect = () => {
         if (echoSequence.length === colorSequence.length) {
             if (compareSequences(echoSequence, colorSequence) === 0) {
@@ -115,26 +187,7 @@ const getPlayerResponse = (e) => {
     checkIfCorrect();
 }
 
-//These two event handlers animate the junimo divs up and down when you hover on them. 
-const junimoHoverEffectUp = (e) => {
-    const junimo = e.currentTarget
-    junimo.style.transform = 'translateY(-70px)'
-    junimo.style.transition = '0.3s ease-in;'
-    // junimoBounce(junimo)
-}
-const junimoHoverEffectDown = (e) => {
-    const junimo = e.currentTarget
-    junimo.style.transform = 'translateY(0px)'
-    junimo.style.transition = '0.3s ease-in;'
-}
 
-//This fills the array of possible colors with the color ids of all the junimo divs on the page and adds an event listener to each junimo div which will call the getPlayerResponse function when clicked
-for (let junimo of allJunimos) {
-    junimoColors.push(junimo.id)
-    junimo.addEventListener('click', getPlayerResponse)
-    junimo.addEventListener('mouseenter', junimoHoverEffectUp)
-    junimo.addEventListener('mouseleave', junimoHoverEffectDown)
-}
 
 //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
 const getColorSequence = (playerLevel) => {
@@ -146,7 +199,7 @@ const getColorSequence = (playerLevel) => {
     //This function checks if the player is about to be given a sequence that is all of the same color, since this would make for a really easy round. It does this by creating an array of the same length as the color sequence that contains only the first color of the color sequence, then running the versatile compareSequences function to determine if both are the same. If they perfectly match, we know it's a sequence of all one color, so it empties the color sequence array and starts the function over. Otherwise, it returns the color sequence. 
     const checkIfAllTheSame = (colorSequence) => {
         if (playerLevel === 1) {
-            console.log(colorSequence)
+            // console.log(colorSequence)
             return colorSequence;
         } else {
             let first = colorSequence[0]
@@ -154,12 +207,10 @@ const getColorSequence = (playerLevel) => {
             for (let i = 0; i < colorSequence.length; i++) {
                 arrOfFirst.push(first)
             }
-            console.log(arrOfFirst)
             if (compareSequences(colorSequence, arrOfFirst) === 0) {
                 colorSequence = [];
                 getColorSequence(playerLevel)
             } else {
-                console.log(colorSequence)
                 return colorSequence;
             }
         }
@@ -253,4 +304,3 @@ resetButton.addEventListener('click', hardReset)
 //*1**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
 //*2**This simple function allows me to create an artificial delay of a few miliseconds anywhere in the program that I need it, such as when I need to allow the player a few seconds to read an instruction before moving on. Credit to Daniel Sasse, https://dev.to/dsasse07/wait-for-it-implementing-a-sleep-function-in-js-2oac.
 ///*3 My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached this solution collaboratively. 
-

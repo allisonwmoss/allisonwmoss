@@ -13,23 +13,27 @@
 <body>
     <div class="container">
         <h1>Junimo Jump!</h1>
-        <div id="junimo-container">
-            <div class="junimo" id="red"></div>
-            <div class="junimo" id="yellow"></div>
-            <div class="junimo" id="blue"></div>
-            <div class="junimo" id="purple"></div>
-            <div class="junimo" id="green"></div>
+        <div class="container" id="difficulty-selection">
+            <h2>Please select your desired difficulty level:</h2>
+            <div class="container-horiz">
+                <div class="difficulty-junimo" id="green">easy</div>
+                <div class="difficulty-junimo" id="yellow">medium</div>
+                <div class="difficulty-junimo" id="red">hard</div>
+                <div class="difficulty-junimo" id="purple">prairie king</div>
+            </div>
         </div>
-        <div class="container" id="instruction"></div>
-        <div class="buttons-box">
-            <button class="btn" id="game-button">START</button>
-            <button class="btn" id="reset-button">RESET</button>
+        <div class="container" id="gameplay">
+            <div id="junimo-container">
+            </div>
+            <div class="container" id="instruction"></div>
+            <div class="buttons-box">
+                <button class="btn" id="game-button">START</button>
+                <button class="btn" id="reset-button">RESET</button>
+            </div>
+            <h3>Your Score:</h3>
+            <div class="container-horiz" id="score-box"></div>
         </div>
 
-        <h3>Your Score:</h3>
-        <div class="container-horiz" id="score-box">
-
-        </div>
     </div>
 
 </body>
