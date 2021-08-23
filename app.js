@@ -1,8 +1,9 @@
+//Stardew Valley copyright 2016-2021 ConcernedApe LLC. 
+
 //Please see Footnotes at end for sources/references of certain code blocks. Code blocks with a footnote are denoted like this:
 //*number
 
-//-------------------------------Global stuff--------------------------------------
-
+//-------------------------------Global goodies--------------------------------------
 //Grab our junimo divs, instruction box div, and start button
 const allJunimos = document.getElementsByClassName('junimo')
 const startButton = document.getElementById('game-button')
@@ -15,8 +16,9 @@ let junimoColors = []
 let colorSequence = []
 let echoSequence = []
 
-//Establishes the baseline difficulty of the game, and allows for the difficulty to increase with each subsequent round.
+//Establishes the baseline difficulty of the game, and allows for the difficulty to increase with each subsequent round. Establishes the delay necessary for the sequence animation to run before the player is prompted to provide their echo sequence. 
 let playerLevel = 5;
+let animationDelay = (playerLevel * 500) + 500;
 
 //This function streamlines the process of flashing up a new instruction or feedback message for the player. 
 const newInstruction = (message) => {
@@ -30,6 +32,7 @@ const newInstruction = (message) => {
 //This function updates the user's level, which corresponds to the difficulty of each round, as well as adding a new "point" for the user to see in the form of a stardrop.
 const updateScore = () => {
     playerLevel++
+    animationDelay = (playerLevel * 500) + 500;
     const newStardrop = document.createElement('div')
     newStardrop.classList.add('stardrop')
     scoreBox.append(newStardrop)
@@ -137,8 +140,8 @@ const delay = (ms) => {
 }
 
 //This function is supposed to run the actions of the player's turn, like waiting for the player to enter 5 colors into the echoSequence array before calling the checkIfCorrect function, but it doesn't work currently. It just uses the delay function to create a delay of a given number of miliseconds to allow the junimo animation to finish before prompting the player to enter their sequence. I tried to use a loop for waiting and checking but it just hung the browser up and never called checkIfCorrect 
-const playerTurn = async (ms) => {
-    await delay(ms)
+const playerTurn = async (animationDelay) => {
+    await delay(animationDelay)
     newInstruction('It\'s your turn!')
 }
 
@@ -164,12 +167,12 @@ const showSequence = async (playerLevel) => {
 }
 
 //This function runs the main game actions. It takes an argument of playerLevel, which will correspond to the player's level as they advance through the game, and which determines the difficulty of each round. It will show the animated random color sequence, then once that is done, it will prompt the player to respond by echoing the sequence.
-const playRound = async (playerLevel) => {
-    showSequence(playerLevel).then(playerTurn(3000))
+const playRound = async (playerLevel, animationDelay) => {
+    showSequence(playerLevel).then(playerTurn(animationDelay))
 }
 
 startButton.addEventListener('click', () => {
-    playRound(playerLevel)
+    playRound(playerLevel, animationDelay)
 })
 resetButton.addEventListener('click', hardReset)
 
