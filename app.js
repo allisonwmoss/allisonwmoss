@@ -19,6 +19,19 @@ let echoSequence = []
 let playerLevel = 1;
 let animationDelay = (playerLevel * 500) + 500;
 
+const checkForWinCondition = () => {
+    console.log('check for win condition was run')
+    if (playerLevel === 3) {
+        console.log('win condition met')
+        newInstruction('Congratulations, you won! Press Reset to play again.')
+        return
+    } else {
+        console.log('win condition not met')
+        resetForNextTurn()
+    }
+}
+
+
 //This function streamlines the process of flashing up a new instruction or feedback message for the player. 
 const newInstruction = (message) => {
     instruction.innerHTML = "";
@@ -31,7 +44,7 @@ const newInstruction = (message) => {
 //This function updates the user's level, which corresponds to the difficulty of each round, as well as adding a new "point" for the user to see in the form of a stardrop.
 const updateScore = () => {
     playerLevel++
-    animationDelay = (playerLevel++ * 500) + 500;
+    animationDelay = (playerLevel * 500) + 500;
     const newStardrop = document.createElement('div')
     newStardrop.classList.add('stardrop')
     scoreBox.append(newStardrop)
@@ -41,7 +54,7 @@ const updateScore = () => {
 const correct = () => {
     newInstruction('Correct!')
     updateScore();
-    resetForNextTurn()
+    checkForWinCondition();
 }
 //This function runs if the player gets the pattern incorrect. It removes all of the player's stardrops and adds a message that the pattern was wrong, and instructs the player to click Reset to start over. 
 const incorrect = () => {
@@ -64,7 +77,8 @@ const hardReset = () => {
     echoSequence = []
     instruction.innerHTML = ""
     scoreBox.innerHTML = "";
-    playerLevel = 5;
+    playerLevel = 1;
+    animationDelay = (playerLevel * 500) + 500
 }
 
 //*3
@@ -88,7 +102,6 @@ const getPlayerResponse = (e) => {
     const junimoColor = e.currentTarget.id
     console.log(junimoColor)
     echoSequence.push(junimoColor)
-    console.log(echoSequence)
     console.log(colorSequence)
     const checkIfCorrect = () => {
         if (echoSequence.length === colorSequence.length) {
@@ -102,10 +115,25 @@ const getPlayerResponse = (e) => {
     checkIfCorrect();
 }
 
+//These two event handlers animate the junimo divs up and down when you hover on them. 
+const junimoHoverEffectUp = (e) => {
+    const junimo = e.currentTarget
+    junimo.style.transform = 'translateY(-70px)'
+    junimo.style.transition = '0.3s ease-in;'
+    // junimoBounce(junimo)
+}
+const junimoHoverEffectDown = (e) => {
+    const junimo = e.currentTarget
+    junimo.style.transform = 'translateY(0px)'
+    junimo.style.transition = '0.3s ease-in;'
+}
+
 //This fills the array of possible colors with the color ids of all the junimo divs on the page and adds an event listener to each junimo div which will call the getPlayerResponse function when clicked
 for (let junimo of allJunimos) {
     junimoColors.push(junimo.id)
     junimo.addEventListener('click', getPlayerResponse)
+    junimo.addEventListener('mouseenter', junimoHoverEffectUp)
+    junimo.addEventListener('mouseleave', junimoHoverEffectDown)
 }
 
 //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
@@ -143,9 +171,11 @@ const getColorSequence = (playerLevel) => {
 
 //this function makes a given junimo div bounce up, then back down to baseline after 200 miliseconds
 const junimoBounce = (junimoDiv) => {
-    junimoDiv.style.transform = 'translateY(-50px)'
+    junimoDiv.style.transform = 'translateY(-70px)'
+    junimoDiv.style.transition = '0.3s ease-in;'
     setTimeout(() => {
         junimoDiv.style.transform = 'translateY(0px)'
+        junimoDiv.style.transition = '0.3s ease-in;'
     }, 200)
 }
 
@@ -211,7 +241,7 @@ resetButton.addEventListener('click', hardReset)
 // Use a modal to have the game rules appear in a box, which I can then click out of to hide.
 // Show me a cute animation of all the junimos jumping up and down at random when I win. 
 // Give me an option of how many rounds I'd like to play, like Easy, Medium, and Hard modes, so that I can ease into the game or really put my skills to the test. 
-// Require me to repeat the given pattern within a certain amount of time, and show me the time I have left as it ticks down. 
+// Require me to repeat the given pattern within a certain amount of time, and show me the time I have left as it ticks down. ()
 
 
 
