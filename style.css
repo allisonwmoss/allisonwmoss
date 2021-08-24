@@ -87,7 +87,6 @@ h1 {
 .stardrop {
     width: 100px;
     height: 100px;
-    border: 1px solid grey;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 80px;
@@ -108,4 +107,20 @@ h1 {
 
 #green-diff {
     background-image: url('images/green-junimo.png')
+}
+
+.outcome {
+    width: 500px;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 450px;
+}
+
+#win {
+    background-image: url('images/stardrop.png')
+}
+
+#lose {
+    background-image: url('images/lose-icon.png')
 }

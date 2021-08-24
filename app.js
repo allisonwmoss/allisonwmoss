@@ -38,11 +38,22 @@ const gameModeOptions = [
 //--------------------------------GLOBAL UTILITIES-------------------------------------
 
 //This function streamlines the process of flashing up a new instruction or feedback message for the player. 
-const newInstruction = (message) => {
+const newInstruction = (message, outcome) => {
     instruction.innerHTML = "";
     const newH2 = document.createElement('h2')
     newH2.innerText = message;
     instruction.append(newH2)
+    if (outcome) {
+        const outcomeDiv = document.createElement('div');
+        outcomeDiv.setAttribute('class', 'outcome')
+        if (outcome === 'win') {
+            outcomeDiv.setAttribute('id', 'win')
+        }
+        if (outcome === 'lose') {
+            outcomeDiv.setAttribute('id', 'lose')
+        }
+        instruction.append(outcomeDiv)
+    }
 }
 
 //*1
@@ -84,8 +95,10 @@ const animateJunimos = (junimoSequence, delay = 500) => {
 let timeoutID;
 const turnTimeLimit = (animationDelay) => {
     timeoutID = setTimeout(() => {
-        console.log('time is up')
-        newInstruction('Oh no, you ran out of time!')
+        for (let junimo of allJunimos) {
+            junimo.style.display = 'none'
+        }
+        newInstruction('Oh no, you ran out of time! Click Reset to try again.', 'lose')
     }, animationDelay + 3500)
 }
 
@@ -114,6 +127,7 @@ for (let div of difficultyDivs) {
             for (let junimo of allJunimos) {
                 junimo.addEventListener('mouseenter', junimoHoverEffectUp)
                 junimo.addEventListener('mouseleave', junimoHoverEffectDown)
+                junimo.style.display = 'flex'
             }
             gameplayContainer.style.display = 'flex'
             playRound(playerLevel, animationDelay)
@@ -167,7 +181,6 @@ const playRound = async (playerLevel, animationDelay) => {
             }
             animateJunimos(junimoSequence)
         }, 1000)
-
     }
 
     //This function initiates the player's turn. It first waits for the animation to finish running, then prompts the player to echo back the sequence. 
@@ -205,7 +218,7 @@ for (let junimo of allJunimos) {
                             if (playerLevel === winCondition) {
                                 resetButton.style.display = 'none'
                                 scoreDiv.style.display = 'none'
-                                newInstruction('Congratulations, you won!')
+                                newInstruction('Congratulations, you won!', 'win')
                                 let celebrationColorSequence = []
                                 let celebrationJunimoSequence = []
                                 for (let i = 0; i < 30; i++) {
@@ -219,9 +232,12 @@ for (let junimo of allJunimos) {
                                 console.log(celebrationJunimoSequence)
                                 animateJunimos(celebrationJunimoSequence, 100)
                                 setTimeout(() => {
+                                    for (let junimo of allJunimos) {
+                                        junimo.style.display = 'none'
+                                    }
                                     resetButton.style.display = 'flex'
                                     scoreDiv.style.display = 'flex'
-                                    newInstruction('Click the Reset button to play again.')
+                                    newInstruction('Click the Reset button to play again.', 'win')
                                 }, 3000)
                                 return;
                             } else {
@@ -289,4 +305,4 @@ resetButton.addEventListener('click', () => {
 //-----------------------SOURCES/FOOTNOTES------------------------------
 ///*1** My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached this solution in compareSequences collaboratively. 
 //*2**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
-//*3 Credit to MDN for this solution for setting and clearing the timeout: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout
+//*3 Credit to MDN for teaching me how to set and clear a timeout using the returned timeoutID: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout
