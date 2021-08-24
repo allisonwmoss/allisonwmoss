@@ -153,6 +153,7 @@ background-image: url('images/prairie-icon.png')
 }
 
 #rules-box {
+    display: flex;
     width: 300px;
     height: 300px;
 }
@@ -166,11 +167,11 @@ background-image: url('images/prairie-icon.png')
     background-size: 300px;
     text-align: center;
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     align-items:center;
     justify-content: center;
     font-size: 4em;
-    overflow-wrap: break-word;
+    /* overflow-wrap: break-word; */
     font-family: 'Permanent Marker', cursive;
     color: black;
 }
