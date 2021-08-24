@@ -124,13 +124,13 @@ const turnTimeLimit = () => {
 }
 
 rulesBox.addEventListener('mouseenter', (e) => {
-    // rulesDescription.style.display = 'flex'
+    rulesDescription.style.display = 'flex'
     const junimo = e.currentTarget
     junimo.style.transform = 'translateY(-50px)'
     junimo.style.transition = '0.5s ease-in;'
 })
 rulesBox.addEventListener('mouseleave', (e) => {
-    // rulesDescription.style.display = 'none'
+    rulesDescription.style.display = 'none'
     const junimo = e.currentTarget
     junimo.style.transform = 'translateY(0px)'
     junimo.style.transition = '0.5s ease-in;'
