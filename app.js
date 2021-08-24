@@ -8,7 +8,6 @@
 let playerLevel = 0;
 let animationDelay = (playerLevel * 500) + 1500;
 let winCondition = 0;
-// let timeLimit = animationDelay + 3000
 
 //Establish arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence. Establish an empty object to hold the player's choice of game mode. 
 const junimoColors = ['red', 'yellow', 'blue', 'purple', 'green']
@@ -121,14 +120,31 @@ const turnTimeLimit = () => {
 
 }
 
+const difficultyDescriptions = document.getElementsByClassName('diff-description')
+
+// for (let description of difficultyDescriptions) {
+//     const unhideDescription = (e) => {
+//         const desc = e.currentTarget
+//         desc.style.display = 'flex'
+//     }
+// }
+
 for (let div of difficultyDivs) {
+    let description;
+    if (div.innerText === 'prairie king') {
+        description = difficultyDescriptions.namedItem('prairie')
+    } else {
+        description = difficultyDescriptions.namedItem(div.innerText)
+    }
     //These two event handlers animate the junimo divs up and down when you hover on them. 
     const junimoHoverEffectUp = (e) => {
+        description.style.display = 'flex'
         const junimo = e.currentTarget
         junimo.style.transform = 'translateY(-50px)'
         junimo.style.transition = '0.5s ease-in;'
     }
     const junimoHoverEffectDown = (e) => {
+        description.style.display = 'none'
         const junimo = e.currentTarget
         junimo.style.transform = 'translateY(0px)'
         junimo.style.transition = '0.5s ease-in;'
@@ -343,6 +359,6 @@ resetButton.addEventListener('click', () => {
 
 
 //-----------------------SOURCES/FOOTNOTES------------------------------
-///*1** My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached this solution in compareSequences collaboratively. 
+///*1** My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached the solution in compareSequences collaboratively. 
 //*2**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
 //*3 Credit to MDN for teaching me how to set and clear a timeout using the returned timeoutID: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout

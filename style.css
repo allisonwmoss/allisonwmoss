@@ -48,6 +48,20 @@ h1 {
     background-size: 200px;
 }
 
+.difficulty-box {
+    width: 300px;
+    height: 300px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+.difficulty-box p {
+display: none;
+font-size: 1.5em;
+}
+
 .difficulty-junimo {
     width: 300px;
     height: 300px;
@@ -134,3 +148,6 @@ background-image: url('images/prairie-icon.png')
     display: none;
 }
 
+.concerned-ape {
+    padding: 100px;
+}
