@@ -8,7 +8,7 @@
 let playerLevel = 0;
 let animationDelay = (playerLevel * 500) + 1500;
 let winCondition = 0;
-let timeLimit = animationDelay + 3000
+// let timeLimit = animationDelay + 3000
 
 //Establish arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence. Establish an empty object to hold the player's choice of game mode. 
 const junimoColors = ['red', 'yellow', 'blue', 'purple', 'green']
@@ -97,14 +97,15 @@ const animateJunimos = (junimoSequence, delay = 500) => {
 //*3
 let timeoutID;
 let intervalID;
-let playerTimer = animationDelay + 3000;
+let playerTimer = 5000;
 const turnTimer = () => {
+    timerBox.innerText = (playerTimer / 1000)
     intervalID = setInterval(() => {
         playerTimer -= 1000
         timerBox.innerText = (playerTimer / 1000)
     }, 1000)
 }
-const turnTimeLimit = (animationDelay) => {
+const turnTimeLimit = () => {
     console.log(playerTimer)
     turnTimer()
     timerBox.style.display = 'flex'
@@ -114,9 +115,9 @@ const turnTimeLimit = (animationDelay) => {
             junimo.style.display = 'none'
         }
         timerBox.style.display = 'none'
-        playerTimer = animationDelay + 3000;
+        playerTimer = 5000;
         newInstruction('Oh no, you ran out of time! Click Reset to try again.', 'lose')
-    }, animationDelay + 3000)
+    }, 5000)
 
 }
 
@@ -140,7 +141,7 @@ for (let div of difficultyDivs) {
             playerModeChoice = gameModeSelection;
             playerLevel = gameModeSelection.playerLevel
             winCondition = gameModeSelection.winCondition
-            animationDelay = (playerLevel * 500) + 1500;
+            animationDelay = (playerLevel * 500) + 1000;
             difficultyContainer.style.display = 'none';
             for (let junimo of allJunimos) {
                 junimo.addEventListener('mouseenter', junimoHoverEffectUp)
@@ -158,7 +159,7 @@ for (let div of difficultyDivs) {
 
 //This function runs the main game actions. It takes an argument of playerLevel, which will correspond to the player's level as they advance through the game, and which determines the difficulty of each round. It will show the animated random color sequence, then once that is done, it will prompt the player to respond by echoing the sequence.
 const playRound = async (playerLevel, animationDelay) => {
-    turnTimeLimit(animationDelay)
+    // turnTimeLimit(animationDelay)
     //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
     const getColorSequence = (playerLevel) => {
         for (let i = 0; i < playerLevel; i++) {
@@ -203,8 +204,10 @@ const playRound = async (playerLevel, animationDelay) => {
 
     //This function initiates the player's turn. It first waits for the animation to finish running, then prompts the player to echo back the sequence. 
     const playerTurn = async (animationDelay) => {
+        console.log(animationDelay)
         setTimeout(() => {
             newInstruction('It\'s your turn!')
+            turnTimeLimit()
         }, animationDelay)
     }
     showSequence(playerLevel).then(playerTurn(animationDelay))
@@ -261,6 +264,10 @@ for (let junimo of allJunimos) {
                             } else {
                                 //This function waits three seconds, resets all values needed to play another round, and starts another round. The delay is necessary, because without it, the player will never actually see the message from the correct function indicating that they got the sequence correct--it just starts the next round, which is confusing. 
                                 const resetForNextTurn = async () => {
+                                    clearInterval(intervalID)
+                                    clearTimeout(timeoutID)
+                                    playerTimer = 5000
+                                    timerBox.style.display = 'none'
                                     setTimeout(() => {
                                         colorSequence = []
                                         echoSequence = []
@@ -303,6 +310,10 @@ resetButton.addEventListener('click', () => {
     animationDelay = (playerLevel * 500) + 1500
     gameplayContainer.style.display = 'none';
     difficultyContainer.style.display = 'flex'
+    clearInterval(intervalID)
+    clearTimeout(timeoutID)
+    playerTimer = 5000
+
 })
 
 //Countdown timer/player timeout brainstorming

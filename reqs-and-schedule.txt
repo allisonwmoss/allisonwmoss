@@ -63,9 +63,10 @@ Add an animation to run upon ultimate win condition. x
 Fix bug where second round on Easy mode presents sequence of four colors instead of two. x
 Block reset button until after the player has finished seeing the celebration animation, to avoid a bug where they are still seeing the celebration animation when the next playthrough begins. x
 Add an outcome image that shows when the game ends, and changes according to whether the player won or lost. x
-Add a timeout for the player to repeat the sequence. x 
+Add a timeout for the player to repeat the sequence. x
+Add visual representation of the player turn timeout. x  
 Add special outcome image of purple junimo in cowboy hat for players who lose while in Prairie King mode, since loss is guaranteed.
-Add visual representation of the player turn timeout. 
+
 Design and implement the game rules box. Maybe this could become visible upon hover over a game mode option, on that screen. 
 
 
