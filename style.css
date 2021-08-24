@@ -1,3 +1,6 @@
+/* Stardew Valley copyright 2016-2021 ConcernedApe LLC. Art and concept by Eric Barrone. */
+/* Junimo and Stardrop icons via @EeveeKevin: https://www.pixilart.com/eeveekevin . */
+
 /* Fonts: */
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
@@ -62,8 +65,6 @@ h1 {
     color: black;
 }
 
-
-/* Junimo and Stardrop icons via: https://www.pixilart.com/art/blue-junimo-710824ab6d23cd3 */
 #red {
     background-image: url('images/red-junimo.png');
 }
