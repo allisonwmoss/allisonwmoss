@@ -59,6 +59,26 @@ const compareSequences = (array1, array2) => {
     }
 }
 
+//This function uses setTimeout to make each junimo bounce up 500 miliseconds after the previous one, allowing them to bounce one at a time rather than all at once.
+//*2 (Footnote is for animateJunimos only--junimoBounce is entirely my own work.)
+const animateJunimos = (junimoSequence, delay = 500) => {
+    junimoSequence.forEach((junimoDiv, i) => {
+        (setTimeout(() => {
+            //This function makes a given junimo div bounce up, then back down to baseline after 200 miliseconds
+            const junimoBounce = (junimoDiv) => {
+                junimoDiv.style.transform = 'translateY(-70px)'
+                junimoDiv.style.transition = '0.3s ease-in;'
+                setTimeout(() => {
+                    junimoDiv.style.transform = 'translateY(0px)'
+                    junimoDiv.style.transition = '0.3s ease-in;'
+                }, 200)
+            }
+            junimoBounce(junimoDiv)
+        }, i * delay))
+    })
+}
+
+
 for (let div of difficultyDivs) {
     //These two event handlers animate the junimo divs up and down when you hover on them. 
     const junimoHoverEffectUp = (e) => {
@@ -135,25 +155,6 @@ const playRound = async (playerLevel, animationDelay) => {
                 let color = colorSequence[i];
                 junimoSequence.push(allJunimos.namedItem(color))
             }
-
-            //This function uses setTimeout to make each junimo bounce up 500 miliseconds after the previous one, allowing them to bounce one at a time rather than all at once.
-            //*2 (Footnote is for animateJunimos only--junimoBounce is entirely my own work.)
-            const animateJunimos = (junimoSequence) => {
-                junimoSequence.forEach((junimoDiv, i) => {
-                    (setTimeout(() => {
-                        //This function makes a given junimo div bounce up, then back down to baseline after 200 miliseconds
-                        const junimoBounce = (junimoDiv) => {
-                            junimoDiv.style.transform = 'translateY(-70px)'
-                            junimoDiv.style.transition = '0.3s ease-in;'
-                            setTimeout(() => {
-                                junimoDiv.style.transform = 'translateY(0px)'
-                                junimoDiv.style.transition = '0.3s ease-in;'
-                            }, 200)
-                        }
-                        junimoBounce(junimoDiv)
-                    }, i * 500))
-                })
-            }
             animateJunimos(junimoSequence)
         }, 1000)
 
@@ -192,14 +193,30 @@ for (let junimo of allJunimos) {
                         }
                         updateScore();
                         //This function checks if the player has won the game. If they have, it will congratulate them and encourage them to reset and play again. If they haven't, it will initiate the next round. 
-                        const checkForWinCondition = () => {
+                        const checkForWinCondition = async () => {
                             if (playerLevel === winCondition) {
                                 newInstruction('Congratulations, you won! Press Reset to play again.')
+                                //I need to:
+                                //Define an empty array to hold the celebration sequence
+                                //fill that array with 20 randomly chosen colors
+                                //fill another array with the junimos that match those colors?
+                                //animate each of those junimos bouncing in order, perhaps with less delay between them so it looks less orderly 
+                                let celebrationColorSequence = []
+                                let celebrationJunimoSequence = []
+                                for (let i = 0; i < 50; i++) {
+                                    const randIndex = Math.floor(Math.random() * junimoColors.length)
+                                    celebrationColorSequence.push(junimoColors[randIndex])
+                                }
+                                for (let i = 0; i < 50; i++) {
+                                    let color = celebrationColorSequence[i];
+                                    celebrationJunimoSequence.push(allJunimos.namedItem(color))
+                                }
+                                console.log(celebrationJunimoSequence)
+                                animateJunimos(celebrationJunimoSequence, 100)
                                 return;
                             } else {
                                 //This function waits three seconds, resets all values needed to play another round, and starts another round. The delay is necessary, because without it, the player will never actually see the message from the correct function indicating that they got the sequence correct--it just starts the next round, which is confusing. 
                                 const resetForNextTurn = async () => {
-                                    // await delay(3000)
                                     setTimeout(() => {
                                         colorSequence = []
                                         echoSequence = []
@@ -215,7 +232,7 @@ for (let junimo of allJunimos) {
                     }
                     correct();
                 } else if (compareSequences(echoSequence, colorSequence) === 1) {
-                    //This function runs if the player gets the pattern incorrect. It removes all of the player's stardrops and adds a message that the pattern was wrong, and instructs the player to click Reset to start over. 
+                    //This function runs if the player gets the pattern incorrect. It removes all of the player's stardrops, adds a message that the pattern was wrong, and instructs the player to click Reset to start over. 
                     const incorrect = () => {
                         scoreBox.innerHTML = ""
                         newInstruction('Oh no, you got the pattern wrong! Click Reset to play again.')
@@ -240,8 +257,6 @@ resetButton.addEventListener('click', () => {
     gameplayContainer.style.display = 'none';
     difficultyContainer.style.display = 'flex'
 })
-
-
 
 
 //SOURCES/FOOTNOTES
