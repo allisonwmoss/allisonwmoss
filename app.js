@@ -26,6 +26,9 @@ const scoreBox = document.getElementById('score-box')
 const scoreDiv = document.getElementById('score-div')
 const timerBox = document.getElementById('timer-box')
 const difficultyContainer = document.getElementById('difficulty-selection')
+const difficultyDescriptions = document.getElementsByClassName('diff-description')
+const rulesBox = document.getElementById('rules')
+const rulesDescription = document.getElementById('rules-description')
 
 //Establish the game difficulty modes the player can choose from
 const gameModeOptions = [
@@ -120,14 +123,21 @@ const turnTimeLimit = () => {
 
 }
 
-const difficultyDescriptions = document.getElementsByClassName('diff-description')
+rulesBox.addEventListener('mouseenter', (e) => {
+    rulesDescription.style.display = 'flex'
+    // const junimo = e.currentTarget
+    // junimo.style.transform = 'translateX(-50px)'
+    // junimo.style.transition = '0.5s ease-in;'
+})
+rulesBox.addEventListener('mouseleave', (e) => {
+    rulesDescription.style.display = 'none'
+    // const junimo = e.currentTarget
+    // junimo.style.transform = 'translateX(0px)'
+    // junimo.style.transition = '0.5s ease-in;'
+})
 
-// for (let description of difficultyDescriptions) {
-//     const unhideDescription = (e) => {
-//         const desc = e.currentTarget
-//         desc.style.display = 'flex'
-//     }
-// }
+
+
 
 for (let div of difficultyDivs) {
     let description;
@@ -136,7 +146,7 @@ for (let div of difficultyDivs) {
     } else {
         description = difficultyDescriptions.namedItem(div.innerText)
     }
-    //These two event handlers animate the junimo divs up and down when you hover on them. 
+    //These two event handlers animate the junimo divs up and down when you hover on them.
     const junimoHoverEffectUp = (e) => {
         description.style.display = 'flex'
         const junimo = e.currentTarget
@@ -149,6 +159,7 @@ for (let div of difficultyDivs) {
         junimo.style.transform = 'translateY(0px)'
         junimo.style.transition = '0.5s ease-in;'
     }
+
     //This event handler pulls the player's game mode selection from the div they clicked and starts the game with the corresponding game mode values. It also hides the difficulty selection container and makes visible the gameplay container, and adds a hover effect to the difficulty selection divs.  
     div.addEventListener('click', (e) => {
         const colorId = e.currentTarget.id
