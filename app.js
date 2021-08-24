@@ -53,6 +53,9 @@ const newInstruction = (message, outcome) => {
         if (outcome === 'lose') {
             outcomeDiv.setAttribute('id', 'lose')
         }
+        if (outcome === 'prairie') {
+            outcomeDiv.setAttribute('id', 'prairie-king-lose')
+        }
         instruction.append(outcomeDiv)
     }
 }
@@ -91,8 +94,6 @@ const animateJunimos = (junimoSequence, delay = 500) => {
         }, i * delay))
     })
 }
-
-
 
 //*3
 let timeoutID;
@@ -285,15 +286,20 @@ for (let junimo of allJunimos) {
                     }
                     correct();
                 } else if (compareSequences(echoSequence, colorSequence) === 1) {
-                    //This function runs if the player gets the pattern incorrect. It removes all of the player's stardrops, adds a message that the pattern was wrong, and instructs the player to click Reset to start over. 
-                    const incorrect = () => {
-                        scoreBox.innerHTML = ""
-                        for (let junimo of allJunimos) {
-                            junimo.style.display = 'none'
-                        }
-                        newInstruction('Oh no, you got the pattern wrong! Click Reset to play again.', 'lose')
+                    scoreDiv.innerHTML = ""
+                    for (let junimo of allJunimos) {
+                        junimo.style.display = 'none'
                     }
-                    incorrect()
+                    //This function runs if the player gets the pattern incorrect. It removes all of the player's stardrops, adds a message that the pattern was wrong, and instructs the player to click Reset to start over. 
+                    if (playerModeChoice.id === 'purple-diff') {
+                        newInstruction(`You made it through ${playerLevel - 1} rounds of Prairie King Mode, pardner! Click Reset to play again.`, 'prairie')
+                    } else {
+                        const incorrect = () => {
+                            newInstruction('Oh no, you got the pattern wrong! Click Reset to play again.', 'lose')
+                        }
+                        incorrect()
+                    }
+
                 }
             }
         }

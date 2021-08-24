@@ -126,6 +126,11 @@ h1 {
     background-image: url('images/lose-icon.png')
 }
 
+#prairie-king-lose {
+background-image: url('images/prairie-icon.png')
+}
+
 #timer-box {
     display: none;
 }
+

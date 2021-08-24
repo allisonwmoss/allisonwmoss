@@ -65,10 +65,8 @@ Block reset button until after the player has finished seeing the celebration an
 Add an outcome image that shows when the game ends, and changes according to whether the player won or lost. x
 Add a timeout for the player to repeat the sequence. x
 Add visual representation of the player turn timeout. x  
-Add special outcome image of purple junimo in cowboy hat for players who lose while in Prairie King mode, since loss is guaranteed.
-
+Add special outcome image of purple junimo in cowboy hat for players who lose while in Prairie King mode, since loss is guaranteed. x
 Design and implement the game rules box. Maybe this could become visible upon hover over a game mode option, on that screen. 
-
 
 Wednesday 8/25: Complete styling and testing.
 Add media queries for mobile optimization.
@@ -81,3 +79,7 @@ Add link to deployed app in README file.
 Prepare and rehearse presentation.
 
 ***************************************************************************************************************************************************************************
+
+Yesterday: I organized the code, reorganized the code. Fixed an animation issue. 
+Today: Added win animation, fixed some bugs, added turn timeout and countdown timer for the player. Just got that done after struggling with that.
+What I'm doing now: Add game rules and details for each game mode on hover over options. Add special outcome for "infinity" mode
