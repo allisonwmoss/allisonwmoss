@@ -261,7 +261,10 @@ for (let junimo of allJunimos) {
                     //This function runs if the player gets the pattern incorrect. It removes all of the player's stardrops, adds a message that the pattern was wrong, and instructs the player to click Reset to start over. 
                     const incorrect = () => {
                         scoreBox.innerHTML = ""
-                        newInstruction('Oh no, you got the pattern wrong! Click Reset to play again.')
+                        for (let junimo of allJunimos) {
+                            junimo.style.display = 'none'
+                        }
+                        newInstruction('Oh no, you got the pattern wrong! Click Reset to play again.', 'lose')
                     }
                     incorrect()
                 }
