@@ -9,28 +9,28 @@ Show a good commit history with frequent commits (minimum of one commit per proj
 
 Technical Requirements:
  Project code is pushed to a public Git repository x
- Project is deployed on the internet (Github Pages, Netlify Drop, Surge.sh)
- Uses HTML, CSS, and JS for game solution
- Use Javascript vanilla API for DOM manipulation
- Uses Event listening to handle user interaction
+ Project is deployed on the internet (Github Pages, Netlify Drop, Surge.sh) x
+ Uses HTML, CSS, and JS for game solution x
+ Use Javascript vanilla API for DOM manipulation x
+ Uses Event listening to handle user interaction x
 
  Creativity and Interface:
- Uses CSS to style DOM elements
- Uses CSS to structure DOM element layout on screen
+ Uses CSS to style DOM elements x
+ Uses CSS to structure DOM element layout on screen x
 
  Code Quality:
  HTML, CSS, and JS are in seperate files x
- Names (variables, functions, HTML ids, HTML classes, etc.) follow a naming convention
- Consistent indentation
+ Names (variables, functions, HTML ids, HTML classes, etc.) follow a naming convention x
+ Consistent indentation x
 
  Functionality:
- Render a game in the browser
- User can play single iteration of game
- User can win/tie when winning conditions are met
- User can lose when losing conditions are met
+ Render a game in the browser x
+ User can play single iteration of game x
+ User can win/tie when winning conditions are met x
+ User can lose when losing conditions are met x
 
  Planning/Process/Submission:
- At least 30 git commits made throughout project week
+ At least 30 git commits made throughout project week x
  Has Readme file x
  Readme file has link to deployed app
  
@@ -55,16 +55,18 @@ Fix junimo hover animation, which currently does not run when the player is sele
 Explore ways for players to indicate how hard they want the game to be at start. x
 Fix reset button for new dynamic game mode. x
 Slack Github repo link to Ben. x
-
-
+Fix animation delay issue where animation starts playing too quickly after turn starts. x
+Fix bug where second round on Easy mode presents sequence of four colors instead of two. x
+Reorganize app.js code for readability. Test to ensure everything still works. x
 
 Tuesday 8/24: 
-Reorganize app.js code for readability. Test to ensure everything still works. 
 Look into an animation to run upon ultimate win condition. 
 Design and implement the game rules box. Maybe this could become visible upon hover over a game mode option, on that screen. 
 Look into timeout for the player to repeat the sequence and visual representation of that timeout. 
 
-Wednesday 8/25: Complete styling and testing. 
+Wednesday 8/25: Complete styling and testing.
+Add media queries for mobile optimization.
+ No new edits to JS file after 5:00PM.  
 
 Thursday 8/26: Resolve any remaining issues. Deploy to GitHub Pages. Add link to deployed app in README file. Prepare and rehearse presentation.
 
