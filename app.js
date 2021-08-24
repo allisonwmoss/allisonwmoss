@@ -8,6 +8,7 @@
 let playerLevel = 0;
 let animationDelay = (playerLevel * 500) + 1500;
 let winCondition = 0;
+let timeLimit = animationDelay + 3000
 
 //Establish arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence. Establish an empty object to hold the player's choice of game mode. 
 const junimoColors = ['red', 'yellow', 'blue', 'purple', 'green']
@@ -79,6 +80,14 @@ const animateJunimos = (junimoSequence, delay = 500) => {
     })
 }
 
+//*3
+let timeoutID;
+const turnTimeLimit = (animationDelay) => {
+    timeoutID = setTimeout(() => {
+        console.log('time is up')
+        newInstruction('Oh no, you ran out of time!')
+    }, animationDelay + 3500)
+}
 
 for (let div of difficultyDivs) {
     //These two event handlers animate the junimo divs up and down when you hover on them. 
@@ -117,7 +126,7 @@ for (let div of difficultyDivs) {
 
 //This function runs the main game actions. It takes an argument of playerLevel, which will correspond to the player's level as they advance through the game, and which determines the difficulty of each round. It will show the animated random color sequence, then once that is done, it will prompt the player to respond by echoing the sequence.
 const playRound = async (playerLevel, animationDelay) => {
-
+    turnTimeLimit(animationDelay)
     //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
     const getColorSequence = (playerLevel) => {
         for (let i = 0; i < playerLevel; i++) {
@@ -170,14 +179,14 @@ const playRound = async (playerLevel, animationDelay) => {
     showSequence(playerLevel).then(playerTurn(animationDelay))
 }
 
-
 //This event handler pulls the color id from a junimo div clicked by the player and adds it to the echo sequence. It then checks if the player has at least entered the right number of items in the echo sequence. If the player has, it will check if the echo sequence and the color sequence are the same, and end or move the game along accordingly. 
 for (let junimo of allJunimos) {
     junimo.addEventListener('click', (e) => {
         const junimoColor = e.currentTarget.id
         echoSequence.push(junimoColor)
-        const checkIfCorrect = () => {
+        const checkIfCorrect = async () => {
             if (echoSequence.length === colorSequence.length) {
+                clearTimeout(timeoutID)
                 if (compareSequences(echoSequence, colorSequence) === 0) {
                     //This function runs if the player gets the pattern correct. It adds a message that the player was correct, updates the player's level and score, and resets everything needed for the next round.
                     const correct = () => {
@@ -259,7 +268,25 @@ resetButton.addEventListener('click', () => {
     difficultyContainer.style.display = 'flex'
 })
 
+//Countdown timer/player timeout brainstorming
+//What do i need to do?
+//I want a timeout that starts running when the player's turn starts, waits 5 seconds or so, then tells them they ran out of time, removes the ability for them to get the sequence right after this point, and prompts them to reset. 
+//wrap the whole chunk of code that handles the player's response in a setTimeout?
+//No, that would just delay the running of all of that code, which is the opposite of what we want. 
+//Precede (or follow up? does the order matter?) all of that code with a setTimeout that will fire a function at the end which tells the player they ran out of time, maybe hide all of the junimo divs so they can't click them??? and prompt the player to reset the game and start over. 
+//Will the setTimeout need to account for the differing lengths of the animationDelay? Probably
 
-//SOURCES/FOOTNOTES
+
+
+
+//create an empty div on the page called "timer" or something and save it to a variable
+//
+
+
+
+
+
+//-----------------------SOURCES/FOOTNOTES------------------------------
 ///*1** My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached this solution in compareSequences collaboratively. 
 //*2**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
+//*3 Credit to MDN for this solution for setting and clearing the timeout: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout

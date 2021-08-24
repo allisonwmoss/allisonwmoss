@@ -61,8 +61,10 @@ Reorganize app.js code for readability. Test to ensure everything still works. x
 Tuesday 8/24: 
 Look into an animation to run upon ultimate win condition. x 
 Fix bug where second round on Easy mode presents sequence of four colors instead of two. x
-Design and implement the game rules box. Maybe this could become visible upon hover over a game mode option, on that screen. 
+Block reset button until after the player has finished seeing the celebration animation, to avoid a bug where they are still seeing the celebration animation when the next playthrough begins. x
 Look into timeout for the player to repeat the sequence and visual representation of that timeout. 
+Design and implement the game rules box. Maybe this could become visible upon hover over a game mode option, on that screen. 
+
 
 Wednesday 8/25: Complete styling and testing.
 Add media queries for mobile optimization.
