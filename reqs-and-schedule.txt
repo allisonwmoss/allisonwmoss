@@ -59,10 +59,13 @@ Fix animation delay issue where animation starts playing too quickly after turn 
 Reorganize app.js code for readability. Test to ensure everything still works. x
 
 Tuesday 8/24: 
-Look into an animation to run upon ultimate win condition. x 
+Add an animation to run upon ultimate win condition. x 
 Fix bug where second round on Easy mode presents sequence of four colors instead of two. x
 Block reset button until after the player has finished seeing the celebration animation, to avoid a bug where they are still seeing the celebration animation when the next playthrough begins. x
-Look into timeout for the player to repeat the sequence and visual representation of that timeout. 
+Add an outcome image that shows when the game ends, and changes according to whether the player won or lost. x
+Add a timeout for the player to repeat the sequence. x 
+Add special outcome image of purple junimo in cowboy hat for players who lose while in Prairie King mode, since loss is guaranteed.
+Add visual representation of the player turn timeout. 
 Design and implement the game rules box. Maybe this could become visible upon hover over a game mode option, on that screen. 
 
 
@@ -70,6 +73,10 @@ Wednesday 8/25: Complete styling and testing.
 Add media queries for mobile optimization.
  No new edits to JS file after 5:00PM.  
 
-Thursday 8/26: Resolve any remaining issues. Deploy to GitHub Pages. Add link to deployed app in README file. Prepare and rehearse presentation.
+Thursday 8/26: 
+Resolve any remaining issues. 
+Deploy to GitHub Pages. x
+Add link to deployed app in README file. 
+Prepare and rehearse presentation.
 
 ***************************************************************************************************************************************************************************

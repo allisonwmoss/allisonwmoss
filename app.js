@@ -25,6 +25,7 @@ const resetButton = document.getElementById('reset-button')
 const instruction = document.getElementById('instruction')
 const scoreBox = document.getElementById('score-box')
 const scoreDiv = document.getElementById('score-div')
+const timerBox = document.getElementById('timer-box')
 const difficultyContainer = document.getElementById('difficulty-selection')
 
 //Establish the game difficulty modes the player can choose from
@@ -91,15 +92,32 @@ const animateJunimos = (junimoSequence, delay = 500) => {
     })
 }
 
+
+
 //*3
 let timeoutID;
+let intervalID;
+let playerTimer = animationDelay + 3000;
+const turnTimer = () => {
+    intervalID = setInterval(() => {
+        playerTimer -= 1000
+        timerBox.innerText = (playerTimer / 1000)
+    }, 1000)
+}
 const turnTimeLimit = (animationDelay) => {
+    console.log(playerTimer)
+    turnTimer()
+    timerBox.style.display = 'flex'
     timeoutID = setTimeout(() => {
+        clearInterval(intervalID)
         for (let junimo of allJunimos) {
             junimo.style.display = 'none'
         }
+        timerBox.style.display = 'none'
+        playerTimer = animationDelay + 3000;
         newInstruction('Oh no, you ran out of time! Click Reset to try again.', 'lose')
-    }, animationDelay + 3500)
+    }, animationDelay + 3000)
+
 }
 
 for (let div of difficultyDivs) {

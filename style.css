@@ -125,3 +125,7 @@ h1 {
 #lose {
     background-image: url('images/lose-icon.png')
 }
+
+#timer-box {
+    display: none;
+}
