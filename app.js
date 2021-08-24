@@ -106,7 +106,6 @@ const turnTimer = () => {
     }, 1000)
 }
 const turnTimeLimit = () => {
-    console.log(playerTimer)
     turnTimer()
     timerBox.style.display = 'flex'
     timeoutID = setTimeout(() => {
@@ -192,7 +191,6 @@ const playRound = async (playerLevel, animationDelay) => {
     const showSequence = async (playerLevel) => {
         setTimeout(() => {
             getColorSequence(playerLevel)
-            console.log(colorSequence)
             let junimoSequence = [];
             for (let i = 0; i < colorSequence.length; i++) {
                 let color = colorSequence[i];
@@ -204,7 +202,6 @@ const playRound = async (playerLevel, animationDelay) => {
 
     //This function initiates the player's turn. It first waits for the animation to finish running, then prompts the player to echo back the sequence. 
     const playerTurn = async (animationDelay) => {
-        console.log(animationDelay)
         setTimeout(() => {
             newInstruction('It\'s your turn!')
             turnTimeLimit()
@@ -221,6 +218,8 @@ for (let junimo of allJunimos) {
         const checkIfCorrect = async () => {
             if (echoSequence.length === colorSequence.length) {
                 clearTimeout(timeoutID)
+                clearInterval(intervalID)
+                timerBox.style.display = 'none'
                 if (compareSequences(echoSequence, colorSequence) === 0) {
                     //This function runs if the player gets the pattern correct. It adds a message that the player was correct, updates the player's level and score, and resets everything needed for the next round.
                     const correct = () => {
@@ -237,6 +236,9 @@ for (let junimo of allJunimos) {
                         //This function checks if the player has won the game. If they have, it will congratulate them, show them a cute animation of randomly bouncing junimos (and temporarily hide the reset button to avoid a bug), and encourage them to reset and play again. If they haven't won the game, it will initiate the next round. 
                         const checkForWinCondition = async () => {
                             if (playerLevel === winCondition) {
+                                clearInterval(intervalID)
+                                clearTimeout(timeoutID)
+                                timerBox.style.display = 'none'
                                 resetButton.style.display = 'none'
                                 scoreDiv.style.display = 'none'
                                 newInstruction('Congratulations, you won!', 'win')
@@ -250,7 +252,7 @@ for (let junimo of allJunimos) {
                                     let color = celebrationColorSequence[i];
                                     celebrationJunimoSequence.push(allJunimos.namedItem(color))
                                 }
-                                console.log(celebrationJunimoSequence)
+
                                 animateJunimos(celebrationJunimoSequence, 100)
                                 setTimeout(() => {
                                     for (let junimo of allJunimos) {
