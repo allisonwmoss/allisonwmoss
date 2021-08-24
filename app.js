@@ -123,10 +123,10 @@ const playRound = async (playerLevel, animationDelay) => {
             const randIndex = Math.floor(Math.random() * junimoColors.length)
             colorSequence.push(junimoColors[randIndex])
         }
-
+        console.log(colorSequence)
         //This function checks if the player is about to be given a sequence that is all of the same color. It does this by creating an array of the same length as the color sequence that contains only the first color of the color sequence, then running the versatile compareSequences function to determine if both are the same. If they perfectly match, it empties the color sequence array and starts the function over. Otherwise, it returns the color sequence. 
         const checkIfAllTheSame = (colorSequence) => {
-            if (playerLevel === 1) {
+            if (colorSequence.length === 1) {
                 // console.log(colorSequence)
                 return colorSequence;
             } else {
@@ -192,15 +192,10 @@ for (let junimo of allJunimos) {
                             scoreBox.append(newStardrop)
                         }
                         updateScore();
-                        //This function checks if the player has won the game. If they have, it will congratulate them and encourage them to reset and play again. If they haven't, it will initiate the next round. 
+                        //This function checks if the player has won the game. If they have, it will congratulate them, show them a cute animation of randomly bouncing junimos, and encourage them to reset and play again. If they haven't, it will initiate the next round. 
                         const checkForWinCondition = async () => {
                             if (playerLevel === winCondition) {
                                 newInstruction('Congratulations, you won! Press Reset to play again.')
-                                //I need to:
-                                //Define an empty array to hold the celebration sequence
-                                //fill that array with 20 randomly chosen colors
-                                //fill another array with the junimos that match those colors?
-                                //animate each of those junimos bouncing in order, perhaps with less delay between them so it looks less orderly 
                                 let celebrationColorSequence = []
                                 let celebrationJunimoSequence = []
                                 for (let i = 0; i < 50; i++) {

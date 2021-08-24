@@ -56,11 +56,11 @@ Explore ways for players to indicate how hard they want the game to be at start.
 Fix reset button for new dynamic game mode. x
 Slack Github repo link to Ben. x
 Fix animation delay issue where animation starts playing too quickly after turn starts. x
-Fix bug where second round on Easy mode presents sequence of four colors instead of two. x
 Reorganize app.js code for readability. Test to ensure everything still works. x
 
 Tuesday 8/24: 
-Look into an animation to run upon ultimate win condition. 
+Look into an animation to run upon ultimate win condition. x 
+Fix bug where second round on Easy mode presents sequence of four colors instead of two. x
 Design and implement the game rules box. Maybe this could become visible upon hover over a game mode option, on that screen. 
 Look into timeout for the player to repeat the sequence and visual representation of that timeout. 
 
