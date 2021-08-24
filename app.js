@@ -23,6 +23,7 @@ gameplayContainer.style.display = 'none';
 const resetButton = document.getElementById('reset-button')
 const instruction = document.getElementById('instruction')
 const scoreBox = document.getElementById('score-box')
+const scoreDiv = document.getElementById('score-div')
 const difficultyContainer = document.getElementById('difficulty-selection')
 
 //Establish the game difficulty modes the player can choose from
@@ -123,33 +124,33 @@ const playRound = async (playerLevel, animationDelay) => {
             const randIndex = Math.floor(Math.random() * junimoColors.length)
             colorSequence.push(junimoColors[randIndex])
         }
-        console.log(colorSequence)
+        //----The function below is currently out of commission. I determined it was causing a bug where a player playing in easy mode on their second round after a reset would SOMETIMES get a sequence of 4 junimos instead of 2, and I can't for the life of me figure out why, or why it only impacts this one circumstance some of the time. ----
         //This function checks if the player is about to be given a sequence that is all of the same color. It does this by creating an array of the same length as the color sequence that contains only the first color of the color sequence, then running the versatile compareSequences function to determine if both are the same. If they perfectly match, it empties the color sequence array and starts the function over. Otherwise, it returns the color sequence. 
-        const checkIfAllTheSame = (colorSequence) => {
-            if (colorSequence.length === 1) {
-                // console.log(colorSequence)
-                return colorSequence;
-            } else {
-                let first = colorSequence[0]
-                let arrOfFirst = []
-                for (let i = 0; i < colorSequence.length; i++) {
-                    arrOfFirst.push(first)
-                }
-                if (compareSequences(colorSequence, arrOfFirst) === 0) {
-                    colorSequence = [];
-                    getColorSequence(playerLevel)
-                } else {
-                    return colorSequence;
-                }
-            }
-        }
-        checkIfAllTheSame(colorSequence)
+        // const checkIfAllTheSame = (colorSequence) => {
+        //     if (colorSequence.length === 1) {
+        //         return colorSequence;
+        //     } else {
+        //         let first = colorSequence[0]
+        //         let arrOfFirst = []
+        //         for (let i = 0; i < colorSequence.length; i++) {
+        //             arrOfFirst.push(first)
+        //         }
+        //         if (compareSequences(colorSequence, arrOfFirst) === 0) {
+        //             colorSequence = [];
+        //             getColorSequence(playerLevel)
+        //         } else {
+        //             return colorSequence;
+        //         }
+        //     }
+        // }
+        // checkIfAllTheSame(colorSequence)
         return colorSequence;
     }
     //This function shows the junimo sequence after a 1 second "breather" delay. I found it jarring for the user to have to go straight into the first animation from choosing their game mode. 
     const showSequence = async (playerLevel) => {
         setTimeout(() => {
             getColorSequence(playerLevel)
+            console.log(colorSequence)
             let junimoSequence = [];
             for (let i = 0; i < colorSequence.length; i++) {
                 let color = colorSequence[i];
@@ -165,8 +166,6 @@ const playRound = async (playerLevel, animationDelay) => {
         setTimeout(() => {
             newInstruction('It\'s your turn!')
         }, animationDelay)
-        // await delay(animationDelay)
-
     }
     showSequence(playerLevel).then(playerTurn(animationDelay))
 }
@@ -192,22 +191,29 @@ for (let junimo of allJunimos) {
                             scoreBox.append(newStardrop)
                         }
                         updateScore();
-                        //This function checks if the player has won the game. If they have, it will congratulate them, show them a cute animation of randomly bouncing junimos, and encourage them to reset and play again. If they haven't, it will initiate the next round. 
+                        //This function checks if the player has won the game. If they have, it will congratulate them, show them a cute animation of randomly bouncing junimos (and temporarily hide the reset button to avoid a bug), and encourage them to reset and play again. If they haven't won the game, it will initiate the next round. 
                         const checkForWinCondition = async () => {
                             if (playerLevel === winCondition) {
-                                newInstruction('Congratulations, you won! Press Reset to play again.')
+                                resetButton.style.display = 'none'
+                                scoreDiv.style.display = 'none'
+                                newInstruction('Congratulations, you won!')
                                 let celebrationColorSequence = []
                                 let celebrationJunimoSequence = []
-                                for (let i = 0; i < 50; i++) {
+                                for (let i = 0; i < 30; i++) {
                                     const randIndex = Math.floor(Math.random() * junimoColors.length)
                                     celebrationColorSequence.push(junimoColors[randIndex])
                                 }
-                                for (let i = 0; i < 50; i++) {
+                                for (let i = 0; i < 30; i++) {
                                     let color = celebrationColorSequence[i];
                                     celebrationJunimoSequence.push(allJunimos.namedItem(color))
                                 }
                                 console.log(celebrationJunimoSequence)
                                 animateJunimos(celebrationJunimoSequence, 100)
+                                setTimeout(() => {
+                                    resetButton.style.display = 'flex'
+                                    scoreDiv.style.display = 'flex'
+                                    newInstruction('Click the Reset button to play again.')
+                                }, 3000)
                                 return;
                             } else {
                                 //This function waits three seconds, resets all values needed to play another round, and starts another round. The delay is necessary, because without it, the player will never actually see the message from the correct function indicating that they got the sequence correct--it just starts the next round, which is confusing. 
