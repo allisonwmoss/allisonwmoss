@@ -72,7 +72,7 @@ h1 {
 
 .difficulty-box p {
 display: none;
-font-size: 1.5em;
+font-size: 1.3em;
 }
 
 .difficulty-junimo {
@@ -92,6 +92,7 @@ font-size: 1.5em;
     font-family: 'Permanent Marker', cursive;
     color: black;
 }
+
 
 
 #red {
