@@ -30,6 +30,7 @@ const difficultyDescriptions = document.getElementsByClassName('diff-description
 const rulesBox = document.getElementById('rules')
 const rulesDescription = document.getElementById('rules-description')
 const vertContainers = document.getElementsByClassName('container-vert')
+const hiddenContainers = document.getElementsByClassName('hidden')
 
 //Establish the game difficulty modes the player can choose from
 const gameModeOptions = [
@@ -46,6 +47,7 @@ const newInstruction = (message, outcome) => {
     instruction.innerHTML = "";
     const newH2 = document.createElement('h2')
     newH2.innerText = message;
+    newH2.setAttribute('class', 'instruction')
     instruction.append(newH2)
     if (outcome) {
         const outcomeDiv = document.createElement('div');
@@ -86,7 +88,7 @@ const animateJunimos = (junimoSequence, delay = 500) => {
         (setTimeout(() => {
             //This function makes a given junimo div bounce up, then back down to baseline after 200 miliseconds
             const junimoBounce = (junimoDiv) => {
-                junimoDiv.style.transform = 'translateY(-50px)'
+                junimoDiv.style.transform = 'translateY(-70px)'
                 junimoDiv.style.transition = '0.3s ease-in;'
                 setTimeout(() => {
                     junimoDiv.style.transform = 'translateY(0px)'
@@ -168,6 +170,9 @@ for (let div of difficultyDivs) {
             winCondition = gameModeSelection.winCondition
             animationDelay = (playerLevel * 500) + 1000;
             difficultyContainer.style.display = 'none';
+            for (let container of hiddenContainers) {
+                container.style.display = 'flex';
+            }
             for (let vertContainer of vertContainers) {
                 vertContainer.style.display = 'none'
             }
@@ -232,7 +237,7 @@ const playRound = async (playerLevel, animationDelay) => {
     //This function initiates the player's turn. It first waits for the animation to finish running, then prompts the player to echo back the sequence. 
     const playerTurn = async (animationDelay) => {
         setTimeout(() => {
-            newInstruction('It\'s your turn!')
+            newInstruction('Echo the sequence!')
             turnTimeLimit()
         }, animationDelay)
     }
@@ -335,7 +340,7 @@ for (let junimo of allJunimos) {
     });
 }
 
-//This event handler allows the player to reset the game to a neutral state so they can start over from the game mode selection screen. 
+//This event handler allows the player to reset the game to a neutral state so they can start over from the game mode selection view. 
 resetButton.addEventListener('click', () => {
     colorSequence = []
     echoSequence = []
@@ -349,10 +354,12 @@ resetButton.addEventListener('click', () => {
     for (let vertContainer of vertContainers) {
         vertContainer.style.display = 'flex'
     }
+    for (let container of hiddenContainers) {
+        container.style.display = 'none';
+    }
     clearInterval(intervalID)
     clearTimeout(timeoutID)
     playerTimer = 5000
-
 })
 
 //Countdown timer/player timeout brainstorming
