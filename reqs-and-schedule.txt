@@ -70,10 +70,10 @@ Design and implement the game rules box. Maybe this could become visible upon ho
 
 Wednesday 8/25: 
 Make new wireframe designs for the landing view, game round view, and outcome view on desktop and mobile. x
-Complete styling and testing.
-Add media queries for mobile optimization.
-Attend Outcomes from 1:30-3:00.
- No new edits to JS file after 5:00PM.  
+Complete styling and testing. x
+Add media queries for mobile optimization. X
+Attend Outcomes from 1:30-3:00. x
+ No new edits to JS file after 5:00PM. x  
 
 Thursday 8/26: 
 Resolve any remaining issues. 
@@ -83,8 +83,7 @@ Prepare and rehearse presentation.
 
 ***************************************************************************************************************************************************************************
 
-
 LESSONS/TAKEAWAYS:
-
 -I'm grateful that I left myself with so much time to complete the styling. 
--Next time I should probably do the styling first. 
+-Next time I should probably do the styling before writing the JS.
+
