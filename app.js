@@ -29,6 +29,7 @@ const difficultyContainer = document.getElementById('difficulty-selection')
 const difficultyDescriptions = document.getElementsByClassName('diff-description')
 const rulesBox = document.getElementById('rules')
 const rulesDescription = document.getElementById('rules-description')
+const vertContainers = document.getElementsByClassName('container-vert')
 
 //Establish the game difficulty modes the player can choose from
 const gameModeOptions = [
@@ -85,7 +86,7 @@ const animateJunimos = (junimoSequence, delay = 500) => {
         (setTimeout(() => {
             //This function makes a given junimo div bounce up, then back down to baseline after 200 miliseconds
             const junimoBounce = (junimoDiv) => {
-                junimoDiv.style.transform = 'translateY(-70px)'
+                junimoDiv.style.transform = 'translateY(-50px)'
                 junimoDiv.style.transition = '0.3s ease-in;'
                 setTimeout(() => {
                     junimoDiv.style.transform = 'translateY(0px)'
@@ -126,7 +127,7 @@ const turnTimeLimit = () => {
 rulesBox.addEventListener('mouseenter', (e) => {
     rulesDescription.style.display = 'flex'
     const junimo = e.currentTarget
-    junimo.style.transform = 'translateY(-50px)'
+    junimo.style.transform = 'translateY(-30px)'
     junimo.style.transition = '0.5s ease-in;'
 })
 rulesBox.addEventListener('mouseleave', (e) => {
@@ -141,7 +142,7 @@ rulesBox.addEventListener('mouseleave', (e) => {
 
 for (let div of difficultyDivs) {
     let description;
-    if (div.innerText === 'prairie king') {
+    if (div.innerText === 'pk') {
         description = difficultyDescriptions.namedItem('prairie')
     } else {
         description = difficultyDescriptions.namedItem(div.innerText)
@@ -150,7 +151,7 @@ for (let div of difficultyDivs) {
     const junimoHoverEffectUp = (e) => {
         description.style.display = 'flex'
         const junimo = e.currentTarget
-        junimo.style.transform = 'translateY(-50px)'
+        junimo.style.transform = 'translateY(-30px)'
         junimo.style.transition = '0.5s ease-in;'
     }
     const junimoHoverEffectDown = (e) => {
@@ -170,6 +171,9 @@ for (let div of difficultyDivs) {
             winCondition = gameModeSelection.winCondition
             animationDelay = (playerLevel * 500) + 1000;
             difficultyContainer.style.display = 'none';
+            for (let vertContainer of vertContainers) {
+                vertContainer.style.display = 'none'
+            }
             for (let junimo of allJunimos) {
                 junimo.addEventListener('mouseenter', junimoHoverEffectUp)
                 junimo.addEventListener('mouseleave', junimoHoverEffectDown)
@@ -345,6 +349,9 @@ resetButton.addEventListener('click', () => {
     animationDelay = (playerLevel * 500) + 1500
     gameplayContainer.style.display = 'none';
     difficultyContainer.style.display = 'flex'
+    for (let vertContainer of vertContainers) {
+        vertContainer.style.display = 'flex'
+    }
     clearInterval(intervalID)
     clearTimeout(timeoutID)
     playerTimer = 5000
