@@ -31,7 +31,7 @@ const rulesBox = document.getElementById('rules')
 const rulesDescription = document.getElementById('rules-description')
 const vertContainers = document.getElementsByClassName('container-vert')
 const hiddenContainers = document.getElementsByClassName('hidden')
-
+const hiddenBottom = document.getElementById('bottom')
 //Establish the game difficulty modes the player can choose from
 const gameModeOptions = [
     { id: 'green-diff', mode: 'easy', playerLevel: 1, winCondition: 4 },
@@ -236,7 +236,9 @@ const playRound = async (playerLevel, animationDelay) => {
 
     //This function initiates the player's turn. It first waits for the animation to finish running, then prompts the player to echo back the sequence. 
     const playerTurn = async (animationDelay) => {
+        hiddenBottom.style.display = 'none'
         setTimeout(() => {
+            hiddenBottom.style.display = 'flex'
             newInstruction('Echo the sequence!')
             turnTimeLimit()
         }, animationDelay)
