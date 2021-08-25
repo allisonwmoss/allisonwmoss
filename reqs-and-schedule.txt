@@ -73,9 +73,10 @@ Make new wireframe designs for the landing view, game round view, and outcome vi
 Complete styling and testing. x
 Add media queries for mobile optimization. X
 Attend Outcomes from 1:30-3:00. x
- No new edits to JS file after 5:00PM. x  
+No new edits to JS file after 5:00PM. x  
 
 Thursday 8/26: 
+Resolve issue on smaller screens where it is difficult or impossible to start the game due to the hover/hop effect on the mode choice divs.
 Resolve any remaining issues. 
 Deploy to GitHub Pages. x
 Add link to deployed app in README file. 
