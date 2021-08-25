@@ -128,17 +128,14 @@ rulesBox.addEventListener('mouseenter', (e) => {
     rulesDescription.style.display = 'flex'
     const junimo = e.currentTarget
     junimo.style.transform = 'translateY(-30px)'
-    junimo.style.transition = '0.5s ease-in;'
+    junimo.style.transition = '1s ease-in;'
 })
 rulesBox.addEventListener('mouseleave', (e) => {
     rulesDescription.style.display = 'none'
     const junimo = e.currentTarget
     junimo.style.transform = 'translateY(0px)'
-    junimo.style.transition = '0.5s ease-in;'
+    junimo.style.transition = '1s ease-in;'
 })
-
-
-
 
 for (let div of difficultyDivs) {
     let description;
@@ -151,14 +148,14 @@ for (let div of difficultyDivs) {
     const junimoHoverEffectUp = (e) => {
         description.style.display = 'flex'
         const junimo = e.currentTarget
-        junimo.style.transform = 'translateY(-30px)'
-        junimo.style.transition = '0.5s ease-in;'
+        junimo.style.transform = 'translateY(-20px)'
+        junimo.style.transition = '1s ease-in;'
     }
     const junimoHoverEffectDown = (e) => {
         description.style.display = 'none'
         const junimo = e.currentTarget
         junimo.style.transform = 'translateY(0px)'
-        junimo.style.transition = '0.5s ease-in;'
+        junimo.style.transition = '1s ease-out;'
     }
 
     //This event handler pulls the player's game mode selection from the div they clicked and starts the game with the corresponding game mode values. It also hides the difficulty selection container and makes visible the gameplay container, and adds a hover effect to the difficulty selection divs.  
