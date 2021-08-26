@@ -75,7 +75,9 @@ Add media queries for mobile optimization. X
 Attend Outcomes from 1:30-3:00. x
 
 Thursday 8/26: 
+Fix the timeout outcome of Prairie King mode so that it’s the usual Prairie King outcome. x
 Resolve issue on smaller screens where it is difficult or impossible to start the game due to the hover/hop effect on the mode choice divs.
+Screen height on the winning outcome screen is too tall for a standard laptop—make the  height smaller and/or the outcome image smaller
 Resolve any remaining issues. 
 Clean up all files and remove deprecated code.
 Final testing.

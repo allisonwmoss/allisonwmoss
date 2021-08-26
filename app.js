@@ -3,7 +3,6 @@
 //Please see Footnotes at end for sources/references of certain code blocks. Code blocks with a footnote are denoted like this:
 //*number
 
-
 //Establishes the starting difficulty of the game, and allows for the difficulty to increase with each subsequent round. Establishes the delay necessary for the sequence animation to run before the player is prompted to provide their echo sequence. 
 let playerLevel = 0;
 let animationDelay = (playerLevel * 500) + 1500;
@@ -100,6 +99,7 @@ const animateJunimos = (junimoSequence, delay = 500) => {
     })
 }
 
+//-------------------------ROUND TIMER UTILITY-----------------------
 //*3
 let timeoutID;
 let intervalID;
@@ -121,11 +121,18 @@ const turnTimeLimit = () => {
         }
         timerBox.style.display = 'none'
         playerTimer = 5000;
-        newInstruction('Oh no, you ran out of time! Click Reset to try again.', 'lose')
+        if (playerModeChoice.id === 'purple-diff') {
+            newInstruction(`You made it through ${playerLevel - 1} rounds of Prairie King Mode, pardner! Click Reset to play again.`, 'prairie')
+        } else {
+            newInstruction('Oh no, you ran out of time! Click Reset to try again.', 'lose')
+        }
+
     }, 5000)
 
 }
 
+
+//----------------STUFF THAT MAKES THE LANDING VIEW WORK-------------
 rulesBox.addEventListener('mouseenter', (e) => {
     rulesDescription.style.display = 'flex'
     const junimo = e.currentTarget
@@ -160,7 +167,7 @@ for (let div of difficultyDivs) {
         junimo.style.transition = '1s ease-out;'
     }
 
-    //This event handler pulls the player's game mode selection from the div they clicked and starts the game with the corresponding game mode values. It also hides the difficulty selection container and makes visible the gameplay container, and adds a hover effect to the difficulty selection divs.  
+    //This event handler pulls the player's game mode selection from the div they clicked and starts the game with the corresponding game mode values. It also hides the landing view and unhides the gameplay view, and adds a hover effect to the difficulty selection divs.  
     div.addEventListener('click', (e) => {
         const colorId = e.currentTarget.id
         const gameModeSelection = gameModeOptions.find(element => element.id === colorId)
@@ -180,6 +187,7 @@ for (let div of difficultyDivs) {
                 junimo.addEventListener('mouseenter', junimoHoverEffectUp)
                 junimo.addEventListener('mouseleave', junimoHoverEffectDown)
                 junimo.style.display = 'flex'
+                // junimo.style.classList.add('mobile-disabled')
             }
             gameplayContainer.style.display = 'flex'
             playRound(playerLevel, animationDelay)
@@ -190,7 +198,10 @@ for (let div of difficultyDivs) {
     div.addEventListener('mouseleave', junimoHoverEffectDown)
 }
 
-//This function runs the main game actions. It takes an argument of playerLevel, which will correspond to the player's level as they advance through the game, and which determines the difficulty of each round. It will show the animated random color sequence, then once that is done, it will prompt the player to respond by echoing the sequence.
+//---------------------GAMEPLAY FUNCTIONS--------------------------
+
+//This function handles everything the computer shows to the player before their turn. 
+//It takes an argument of playerLevel, which will correspond to the player's level as they advance through the game, and which determines the difficulty of each round. It will show the animated random color sequence, then once that is done, it will prompt the player to respond by echoing the sequence.
 const playRound = async (playerLevel, animationDelay) => {
     // turnTimeLimit(animationDelay)
     //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
@@ -199,26 +210,6 @@ const playRound = async (playerLevel, animationDelay) => {
             const randIndex = Math.floor(Math.random() * junimoColors.length)
             colorSequence.push(junimoColors[randIndex])
         }
-        //----The function below is currently out of commission. I determined it was causing a bug where a player playing in easy mode on their second round after a reset would SOMETIMES get a sequence of 4 junimos instead of 2, and I can't for the life of me figure out why, or why it only impacts this one circumstance some of the time. ----
-        //This function checks if the player is about to be given a sequence that is all of the same color. It does this by creating an array of the same length as the color sequence that contains only the first color of the color sequence, then running the versatile compareSequences function to determine if both are the same. If they perfectly match, it empties the color sequence array and starts the function over. Otherwise, it returns the color sequence. 
-        // const checkIfAllTheSame = (colorSequence) => {
-        //     if (colorSequence.length === 1) {
-        //         return colorSequence;
-        //     } else {
-        //         let first = colorSequence[0]
-        //         let arrOfFirst = []
-        //         for (let i = 0; i < colorSequence.length; i++) {
-        //             arrOfFirst.push(first)
-        //         }
-        //         if (compareSequences(colorSequence, arrOfFirst) === 0) {
-        //             colorSequence = [];
-        //             getColorSequence(playerLevel)
-        //         } else {
-        //             return colorSequence;
-        //         }
-        //     }
-        // }
-        // checkIfAllTheSame(colorSequence)
         return colorSequence;
     }
     //This function shows the junimo sequence after a 1 second "breather" delay. I found it jarring for the user to have to go straight into the first animation from choosing their game mode. 
@@ -246,7 +237,8 @@ const playRound = async (playerLevel, animationDelay) => {
     showSequence(playerLevel).then(playerTurn(animationDelay))
 }
 
-//This event handler pulls the color id from a junimo div clicked by the player and adds it to the echo sequence. It then checks if the player has at least entered the right number of items in the echo sequence. If the player has, it will check if the echo sequence and the color sequence are the same, and end or move the game along accordingly. 
+//This event handler deals with the player's turn. 
+//It pulls the color id from a junimo div clicked by the player and adds it to the echo sequence. It then checks if the player has at least entered the right number of items in the echo sequence. If the player has, it will check if the echo sequence and the color sequence are the same, and end or move the game along accordingly. 
 for (let junimo of allJunimos) {
     junimo.addEventListener('click', (e) => {
         const junimoColor = e.currentTarget.id
