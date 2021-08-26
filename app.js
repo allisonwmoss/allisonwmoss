@@ -382,6 +382,7 @@ resetButton.addEventListener('click', () => {
     for (let container of hiddenContainers) {
         container.style.display = 'none';
     }
+    timerBox.style.display = 'none'
     rulesBox.style.display = 'flex'
     rulesDescription.style.display = 'none'
     clearInterval(intervalID)
