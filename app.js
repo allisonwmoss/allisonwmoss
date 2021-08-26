@@ -7,6 +7,7 @@
 let playerLevel = 0;
 let animationDelay = (playerLevel * 500) + 1500;
 let winCondition = 0;
+let screenSize = ""
 
 //Establish arrays for the possible colors the player will be shown, the randomly generated color sequence, and player's echo sequence. Establish an empty object to hold the player's choice of game mode. 
 const junimoColors = ['red', 'yellow', 'blue', 'purple', 'green']
@@ -44,14 +45,11 @@ const gameModeOptions = [
 
 //*4
 let mediaQuery = window.matchMedia("(min-width:475px) and (min-height: 1220px)")
-console.log(mediaQuery)
 const askIfLargeScreen = (mediaQuery) => {
     if (mediaQuery.matches === true) {
-        console.log('screen is big')
-        return true;
+        screenSize = "large"
     } else {
-        console.log('screen is small uwu')
-        return false;
+        screenSize = "small"
     }
 }
 
@@ -149,7 +147,7 @@ const turnTimeLimit = () => {
 rulesBox.addEventListener('mouseenter', (e) => {
     const junimo = e.currentTarget
     askIfLargeScreen(mediaQuery)
-    if (askIfLargeScreen === true) {
+    if (screenSize === "large") {
         rulesDescription.style.display = 'flex'
         junimo.style.transform = 'translateY(-30px)'
         junimo.style.transition = '1s ease-in;'
@@ -158,22 +156,22 @@ rulesBox.addEventListener('mouseenter', (e) => {
 rulesBox.addEventListener('mouseleave', (e) => {
     const junimo = e.currentTarget
     askIfLargeScreen(mediaQuery)
-    if (askIfLargeScreen === true) {
+    if (screenSize === "large") {
         rulesDescription.style.display = 'none'
         junimo.style.transform = 'translateY(0px)'
         junimo.style.transition = '1s ease-in;'
     }
 })
 
-rulesBox.addEventListener('click', () => {
-    console.log('clicked')
+rulesBox.addEventListener('click', (e) => {
+    const junimo = e.currentTarget
     askIfLargeScreen(mediaQuery)
-    console.log(askIfLargeScreen(mediaQuery))
-    if (askIfLargeScreen === false) {
+    if (screenSize === "small") {
         rulesDescription.style.display = 'flex'
-        console.log(rulesDescription)
+        junimo.style.display = 'none'
     }
 })
+
 
 for (let div of difficultyDivs) {
     let description;
@@ -186,17 +184,20 @@ for (let div of difficultyDivs) {
     const junimoHoverEffectUp = (e) => {
         const junimo = e.currentTarget
         askIfLargeScreen(mediaQuery)
-        if (askIfLargeScreen === true) {
+        if (screenSize === "large") {
             description.style.display = 'flex'
             junimo.style.transform = 'translateY(-20px)'
             junimo.style.transition = '1s ease-in;'
         }
     }
     const junimoHoverEffectDown = (e) => {
-        description.style.display = 'none'
         const junimo = e.currentTarget
-        junimo.style.transform = 'translateY(0px)'
-        junimo.style.transition = '1s ease-out;'
+        askIfLargeScreen(mediaQuery)
+        if (screenSize === "large") {
+            description.style.display = 'none'
+            junimo.style.transform = 'translateY(0px)'
+            junimo.style.transition = '1s ease-out;'
+        }
     }
 
     //This event handler pulls the player's game mode selection from the div they clicked and starts the game with the corresponding game mode values. It also hides the landing view and unhides the gameplay view, and adds a hover effect to the difficulty selection divs.  
@@ -381,6 +382,8 @@ resetButton.addEventListener('click', () => {
     for (let container of hiddenContainers) {
         container.style.display = 'none';
     }
+    rulesBox.style.display = 'flex'
+    rulesDescription.style.display = 'none'
     clearInterval(intervalID)
     clearTimeout(timeoutID)
     playerTimer = 5000
