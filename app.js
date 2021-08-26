@@ -147,16 +147,32 @@ const turnTimeLimit = () => {
 
 //--------------STUFF THAT MAKES THE LANDING VIEW WORK-------------
 rulesBox.addEventListener('mouseenter', (e) => {
-    rulesDescription.style.display = 'flex'
     const junimo = e.currentTarget
-    junimo.style.transform = 'translateY(-30px)'
-    junimo.style.transition = '1s ease-in;'
+    askIfLargeScreen(mediaQuery)
+    if (askIfLargeScreen === true) {
+        rulesDescription.style.display = 'flex'
+        junimo.style.transform = 'translateY(-30px)'
+        junimo.style.transition = '1s ease-in;'
+    }
 })
 rulesBox.addEventListener('mouseleave', (e) => {
-    rulesDescription.style.display = 'none'
     const junimo = e.currentTarget
-    junimo.style.transform = 'translateY(0px)'
-    junimo.style.transition = '1s ease-in;'
+    askIfLargeScreen(mediaQuery)
+    if (askIfLargeScreen === true) {
+        rulesDescription.style.display = 'none'
+        junimo.style.transform = 'translateY(0px)'
+        junimo.style.transition = '1s ease-in;'
+    }
+})
+
+rulesBox.addEventListener('click', () => {
+    console.log('clicked')
+    askIfLargeScreen(mediaQuery)
+    console.log(askIfLargeScreen(mediaQuery))
+    if (askIfLargeScreen === false) {
+        rulesDescription.style.display = 'flex'
+        console.log(rulesDescription)
+    }
 })
 
 for (let div of difficultyDivs) {
@@ -203,7 +219,6 @@ for (let div of difficultyDivs) {
                 junimo.style.display = 'flex'
                 junimo.addEventListener('mouseenter', junimoHoverEffectUp)
                 junimo.addEventListener('mouseleave', junimoHoverEffectDown)
-
             }
             gameplayContainer.style.display = 'flex'
             playRound(playerLevel, animationDelay)
