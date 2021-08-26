@@ -31,6 +31,7 @@ const rulesDescription = document.getElementById('rules-description')
 const vertContainers = document.getElementsByClassName('container-vert')
 const hiddenContainers = document.getElementsByClassName('hidden')
 const hiddenBottom = document.getElementById('bottom')
+
 //Establish the game difficulty modes the player can choose from
 const gameModeOptions = [
     { id: 'green-diff', mode: 'easy', playerLevel: 1, winCondition: 4 },
@@ -39,7 +40,20 @@ const gameModeOptions = [
     { id: 'purple-diff', mode: 'prairieking', playerLevel: 1, winCondition: Infinity }
 ]
 
-//--------------------------------GLOBAL UTILITIES-------------------------------------
+//----------------------GLOBAL UTILITIES------------------------
+
+//*4
+let mediaQuery = window.matchMedia("(min-width:475px) and (min-height: 1220px)")
+console.log(mediaQuery)
+const askIfLargeScreen = (mediaQuery) => {
+    if (mediaQuery.matches === true) {
+        console.log('screen is big')
+        return true;
+    } else {
+        console.log('screen is small uwu')
+        return false;
+    }
+}
 
 //This function streamlines the process of flashing up a new instruction or feedback message for the player. 
 const newInstruction = (message, outcome) => {
@@ -99,7 +113,7 @@ const animateJunimos = (junimoSequence, delay = 500) => {
     })
 }
 
-//-------------------------ROUND TIMER UTILITY-----------------------
+//---------------------ROUND TIMER UTILITY----------------------
 //*3
 let timeoutID;
 let intervalID;
@@ -131,8 +145,7 @@ const turnTimeLimit = () => {
 
 }
 
-
-//----------------STUFF THAT MAKES THE LANDING VIEW WORK-------------
+//--------------STUFF THAT MAKES THE LANDING VIEW WORK-------------
 rulesBox.addEventListener('mouseenter', (e) => {
     rulesDescription.style.display = 'flex'
     const junimo = e.currentTarget
@@ -155,10 +168,13 @@ for (let div of difficultyDivs) {
     }
     //These two event handlers animate the junimo divs up and down when you hover on them.
     const junimoHoverEffectUp = (e) => {
-        description.style.display = 'flex'
         const junimo = e.currentTarget
-        junimo.style.transform = 'translateY(-20px)'
-        junimo.style.transition = '1s ease-in;'
+        askIfLargeScreen(mediaQuery)
+        if (askIfLargeScreen === true) {
+            description.style.display = 'flex'
+            junimo.style.transform = 'translateY(-20px)'
+            junimo.style.transition = '1s ease-in;'
+        }
     }
     const junimoHoverEffectDown = (e) => {
         description.style.display = 'none'
@@ -184,10 +200,10 @@ for (let div of difficultyDivs) {
                 vertContainer.style.display = 'none'
             }
             for (let junimo of allJunimos) {
+                junimo.style.display = 'flex'
                 junimo.addEventListener('mouseenter', junimoHoverEffectUp)
                 junimo.addEventListener('mouseleave', junimoHoverEffectDown)
-                junimo.style.display = 'flex'
-                // junimo.style.classList.add('mobile-disabled')
+
             }
             gameplayContainer.style.display = 'flex'
             playRound(playerLevel, animationDelay)
@@ -203,7 +219,6 @@ for (let div of difficultyDivs) {
 //This function handles everything the computer shows to the player before their turn. 
 //It takes an argument of playerLevel, which will correspond to the player's level as they advance through the game, and which determines the difficulty of each round. It will show the animated random color sequence, then once that is done, it will prompt the player to respond by echoing the sequence.
 const playRound = async (playerLevel, animationDelay) => {
-    // turnTimeLimit(animationDelay)
     //This function generates the random sequence of junimo colors that the player will be shown each round, logs that sequence to the console (for debugging), and returns the color sequence
     const getColorSequence = (playerLevel) => {
         for (let i = 0; i < playerLevel; i++) {
@@ -356,25 +371,8 @@ resetButton.addEventListener('click', () => {
     playerTimer = 5000
 })
 
-//Countdown timer/player timeout brainstorming
-//What do i need to do?
-//I want a timeout that starts running when the player's turn starts, waits 5 seconds or so, then tells them they ran out of time, removes the ability for them to get the sequence right after this point, and prompts them to reset. 
-//wrap the whole chunk of code that handles the player's response in a setTimeout?
-//No, that would just delay the running of all of that code, which is the opposite of what we want. 
-//Precede (or follow up? does the order matter?) all of that code with a setTimeout that will fire a function at the end which tells the player they ran out of time, maybe hide all of the junimo divs so they can't click them??? and prompt the player to reset the game and start over. 
-//Will the setTimeout need to account for the differing lengths of the animationDelay? Probably
-
-
-
-
-//create an empty div on the page called "timer" or something and save it to a variable
-//
-
-
-
-
-
-//-----------------------SOURCES/FOOTNOTES------------------------------
+//-------------------SOURCES/FOOTNOTES--------------------------
 ///*1** My dad, who is not a Javascript guy but is a software engineer, helped me brainstorm on this array comparison issue, and we reached the solution in compareSequences collaboratively. 
 //*2**This code block allows for each junimo to jump up on its own, then wait 500 ms before the next one jumps. Credit to Travis Horn, https://travishorn.com/delaying-foreach-iterations-2ebd4b29ad30 , for this solution for iterating over an array with a set delay between each item. 
-//*3 Credit to MDN for teaching me how to set and clear a timeout using the returned timeoutID: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout
+//*3** Credit to MDN for teaching me how to set and clear a timeout using the returned timeoutID: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout
+//*4** Credit to W3Schools and MDN for teaching me how to use media queries to manipulate the DOM conditionally: https://www.w3schools.com/howto/howto_js_media_queries.asp and https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia.
