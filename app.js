@@ -44,7 +44,7 @@ const gameModeOptions = [
 //----------------------GLOBAL UTILITIES------------------------
 
 //*4
-let mediaQuery = window.matchMedia("(min-width:475px) and (min-height: 1220px)")
+let mediaQuery = window.matchMedia("(min-width:475px) and (min-height: 800px)")
 const askIfLargeScreen = (mediaQuery) => {
     if (mediaQuery.matches === true) {
         screenSize = "large"

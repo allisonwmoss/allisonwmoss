@@ -39,22 +39,9 @@ h3{
     flex-wrap: wrap;
 }
 
-#junimo-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-}
-
-#difficulty-selection {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-self: center;
-    min-width: 200px;
-    max-height: 800px;
+.instruction{
+    max-width: 300px;
+    text-align: center;
 }
 
 .junimo {
@@ -64,6 +51,38 @@ h3{
     background-repeat: no-repeat;
     background-size: 150px;
 }
+
+/* Gameplay junimos */
+#junimo-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+#red {
+    background-image: url('images/red-junimo.png');
+}
+
+#yellow {
+    background-image: url('images/yellow-junimo.png')
+}
+
+#blue {
+    background-image: url('images/blue-junimo.png')
+}
+
+#purple {
+    background-image: url('images/purple-junimo.png')
+}
+
+#green {
+    background-image: url('images/green-junimo.png')
+}
+
+/* Rules for landing screen */
 
 .difficulty-box {
     width: 200px;
@@ -98,30 +117,16 @@ font-size: 1.3em;
     color: black;
 }
 
-.instruction{
-    max-width: 300px;
-    text-align: center;
+#difficulty-selection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: center;
+    min-width: 200px;
+    max-height: 800px;
 }
 
-#red {
-    background-image: url('images/red-junimo.png');
-}
 
-#yellow {
-    background-image: url('images/yellow-junimo.png')
-}
-
-#blue {
-    background-image: url('images/blue-junimo.png')
-}
-
-#purple {
-    background-image: url('images/purple-junimo.png')
-}
-
-#green {
-    background-image: url('images/green-junimo.png')
-}
 
 .stardrop {
     width: 80px;
