@@ -19,6 +19,7 @@ Game mode options to adjust difficulty
 A cute little animation that runs if you win
 A timer runs on the player's turn and is displayed on the screen
 A reset button allows the player to hard-reset the game to its neutral state and the landing view
+Tried to make it look good on smaller screens
 
 Biggest things I learned: 
 Working with asynchronous functions, setTimeout, and setInterval; 
